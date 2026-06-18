@@ -1,0 +1,223 @@
+<?php $__env->startSection('content'); ?>
+
+<link href="https://googleapis.com" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<style>
+
+    body {
+        background: linear-gradient(to bottom, #ffffff, #fdf1f4);
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .fuente-elegante {
+        font-family: 'Playfair Display', serif;
+        font-style: italic;
+        color: #6f7f5d;
+    }
+
+    .spa-card {
+        border: none;
+        border-radius: 30px;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        transition: all 0.4s ease;
+        border: 1px solid rgba(225, 190, 231, 0.3);
+    }
+
+    .spa-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(111, 127, 93, 0.1);
+    }
+
+    .icono-contenedor {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 2px solid #e7a6b6;
+    }
+
+    .btn-nuevo {
+        background-color: #6f7f5d;
+        color: white !important;
+        border-radius: 15px;
+        padding: 10px 25px;
+        text-decoration: none;
+        transition: 0.3s;
+        display: inline-block;
+    }
+
+    .btn-nuevo:hover {
+        background-color: #5a6a4a;
+        transform: scale(1.05);
+    }
+
+    .precio-tag {
+        color: #6f7f5d;
+        font-weight: 700;
+        font-size: 1.5rem;
+    }
+
+</style>
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-5">
+
+        <div>
+
+            <h1 class="display-4 fuente-elegante">
+                Nuestros Servicios
+            </h1>
+
+            <p class="text-muted">
+                <i class="bi bi-stars"></i> 
+                Total servicios: <?php echo e($services->count()); ?>
+
+            </p>
+
+        </div>
+
+        <?php if(Auth::user()->role->name === 'admin'): ?>
+
+            <a href="<?php echo e(route('services.create')); ?>" 
+               class="btn-nuevo shadow-sm">
+                <i class="bi bi-plus-circle-fill me-2"></i>
+                Nuevo Servicio
+            </a>
+
+        <?php endif; ?>
+
+    </div>
+
+    <?php if(session('success')): ?>
+
+        <div class="alert alert-success border-0 shadow-sm mb-4 text-center" 
+             style="border-radius: 15px; background-color: #fdf1f4; color: #6f7f5d;">
+            
+            <i class="bi bi-check-circle-fill me-2"></i> 
+            <?php echo e(session('success')); ?>
+
+
+        </div>
+
+    <?php endif; ?>
+
+    <div class="row g-4 justify-content-center">
+
+        <?php $__empty_1 = true; $__currentLoopData = $services; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $service): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+
+            <div class="col-md-4">
+
+                <div class="card h-100 spa-card shadow-sm p-4 text-center">
+                    
+                    <div class="icono-contenedor">
+
+                        <i class="bi bi-flower1 fs-2" 
+                           style="color: #e7a6b6;">
+                        </i>
+
+                    </div>
+                    
+                    <h4 class="fuente-elegante mb-2">
+                        <?php echo e($service->name); ?>
+
+                    </h4>
+                    
+                    <p class="small mb-3" 
+                       style="color: #e7a6b6; font-weight: 500;">
+
+                        <i class="bi bi-clock-fill me-1"></i> 
+                        Duración: <?php echo e($service->duration ?? '60'); ?> min
+
+                    </p>
+
+                    <p class="text-muted small mb-4 px-2">
+
+                        <?php echo e($service->description ?? 'Tratamiento exclusivo diseñado para tu bienestar.'); ?>
+
+
+                    </p>
+                    
+                    <div class="mb-4">
+
+                        <span class="precio-tag">
+                            $<?php echo e(number_format($service->price, 0, ',', '.')); ?>
+
+                        </span>
+
+                    </div>
+
+                    <?php if(Auth::user()->role->name === 'admin'): ?>
+
+                        <div class="d-flex justify-content-center gap-2 mt-auto pt-3 border-top border-light">
+
+                            <a href="<?php echo e(route('services.edit', $service)); ?>" 
+                               class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+
+                            <form action="<?php echo e(route('services.destroy', $service)); ?>" 
+                                  method="POST" 
+                                  style="display:inline-block;">
+
+                                <?php echo csrf_field(); ?> 
+                                <?php echo method_field('DELETE'); ?>
+
+                                <button type="submit" 
+                                        class="btn btn-sm btn-outline-danger rounded-pill px-3" 
+                                        onclick="return confirm('¿Eliminar servicio?')">
+                                    <i class="bi bi-trash3-fill"></i>
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    <?php endif; ?>
+
+                </div>
+
+            </div>
+
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+
+            <div class="col-12 text-center py-5">
+
+                <div class="alert shadow-sm w-50 mx-auto" 
+                     style="background: white; border-radius: 20px;">
+
+                    <i class="bi bi-info-circle fs-2 mb-3 d-block" 
+                       style="color: #e7a6b6;">
+                    </i>
+
+                    <p class="fuente-elegante fs-4">
+                        No hay servicios registrados.
+                    </p>
+
+                </div>
+
+            </div>
+
+        <?php endif; ?>
+
+    </div>
+
+    <div class="text-center mt-5">
+
+        <a href="<?php echo e(route('dashboard')); ?>" 
+           class="btn btn-link text-muted text-decoration-none">
+            <i class="bi bi-arrow-left"></i> Volver al Panel
+        </a>
+
+    </div>
+
+</div>
+                    
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\Aprendiz\Downloads\PROYECTO--main\resources\views/services/index.blade.php ENDPATH**/ ?>
