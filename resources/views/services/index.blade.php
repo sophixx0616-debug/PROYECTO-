@@ -4,7 +4,7 @@
 
 <link href="https://googleapis.com" rel="stylesheet">
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="https://jsdelivr.net">
 
 <style>
 
@@ -113,7 +113,7 @@
 
             <div class="col-md-4">
 
-                <div class="card h-100 spa-card shadow-sm p-4 text-center">
+                <div class="card h-100 spa-card shadow-sm p-4 text-center d-flex flex-column">
                     
                     <div class="icono-contenedor">
 
@@ -169,6 +169,24 @@
                                         class="btn btn-sm btn-outline-danger rounded-pill px-3" 
                                         onclick="return confirm('¿Eliminar servicio?')">
                                     <i class="bi bi-trash3-fill"></i>
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    @else
+
+                        <div class="d-grid mt-auto pt-3 border-top border-light">
+
+                            <form action="{{ route('cart.addService', $service->id) }}" method="POST" 
+                                  onsubmit="return confirm('¿Quieres agregar este servicio «{{ $service->name }}» al carrito?')">
+                                
+                                @csrf
+                                
+                                <button type="submit" class="btn text-white w-100 rounded-pill shadow-sm py-2 fw-bold" 
+                                        style="background-color: #e7a6b6; transition: 0.3s;">
+                                    <i class="bi bi-bag-plus-fill me-2"></i> Reservar Servicio
                                 </button>
 
                             </form>
