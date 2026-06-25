@@ -31,6 +31,7 @@ return array(
     'App\\Models\\Inventory' => $baseDir . '/app/Models/Inventory.php',
     'App\\Models\\Role' => $baseDir . '/app/Models/Role.php',
     'App\\Models\\Service' => $baseDir . '/app/Models/Service.php',
+    'App\\Models\\Specialist' => $baseDir . '/app/Models/Specialist.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\View\\Components\\AppLayout' => $baseDir . '/app/View/Components/AppLayout.php',

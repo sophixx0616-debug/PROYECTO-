@@ -150,4 +150,4 @@
         </div>
 
     </div>
-</nav><?php /**PATH C:\Users\Aprendiz\Downloads\PROYECTO--main\resources\views/layouts/navbar.blade.php ENDPATH**/ ?>
+</nav><?php /**PATH C:\xampp\htdocs\xampp\PROYECTO--main\resources\views/layouts/navbar.blade.php ENDPATH**/ ?>

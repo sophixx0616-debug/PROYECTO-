@@ -39,4 +39,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
-</html><?php /**PATH C:\Users\Aprendiz\Downloads\PROYECTO--main\resources\views/layouts/app.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\xampp\htdocs\xampp\PROYECTO--main\resources\views/layouts/app.blade.php ENDPATH**/ ?>
