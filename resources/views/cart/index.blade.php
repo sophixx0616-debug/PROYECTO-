@@ -53,14 +53,14 @@
             <div class="card carrito-card shadow-lg">
                 <div class="card-body p-5">
 
-                    {{-- CASO A: El carrito SI tiene productos --}}
+                    {{-- CASO A: El carrito SI tiene productos o servicios --}}
                     @if(session('cart') && count(session('cart')) > 0)
                         
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
                                 <thead class="text-muted small text-uppercase border-bottom">
                                     <tr>
-                                        <th>Insumo / Producto</th>
+                                        <th>Insumo / Servicio</th>
                                         <th class="text-center">Cantidad</th>
                                         <th class="text-end">Precio Unitario</th>
                                         <th class="text-end">Subtotal</th>
@@ -75,7 +75,12 @@
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     <div class="rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="background-color: #fdf1f4; width: 40px; height: 40px;">
-                                                        <i class="bi bi-flower1" style="color: #e7a6b6;"></i>
+                                                        {{-- Icono inteligente --}}
+                                                        @if(isset($details['image']) && $details['image'] === 'service-icon')
+                                                            <i class="bi bi-gem" style="color: #e7a6b6;"></i>
+                                                        @else
+                                                            <i class="bi bi-flower1" style="color: #e7a6b6;"></i>
+                                                        @endif
                                                     </div>
                                                     <div>
                                                         <span class="fw-bold text-secondary d-block">{{ $details['name'] }}</span>
@@ -94,11 +99,10 @@
                                                 ${{ number_format($details['price'] * $details['quantity'], 0, ',', '.') }}
                                             </td>
                                             <td class="text-end">
-                                                {{-- Botón seguro para eliminar un producto --}}
                                                 <form action="{{ route('cart.remove', $id) }}" method="POST" style="display:inline-block;">
                                                     @csrf 
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm text-danger opacity-70 hover:opacity-100" onclick="return confirm('¿Quitar del carrito?')">
+                                                    <button type="submit" class="btn btn-sm text-danger opacity-70 hover:opacity-100" onclick="return confirm('¿Quitar de la bolsa?')">
                                                         <i class="bi bi-trash3-fill fs-5"></i>
                                                     </button>
                                                 </form>
