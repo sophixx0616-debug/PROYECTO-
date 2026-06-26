@@ -8,61 +8,54 @@
 
 <style>
 
-    body {
-        background: linear-gradient(to bottom, #ffffff, #fdf1f4);
-        font-family: 'Poppins', sans-serif;
-    }
+body{
+    background:linear-gradient(to bottom,#ffffff,#fdf1f4);
+    font-family:'Poppins',sans-serif;
+}
 
-    .fuente-elegante {
-        font-family: 'Playfair Display', serif;
-        font-style: italic;
-        color: #6f7f5d;
-    }
+.fuente-elegante{
+    font-family:'Playfair Display',serif;
+    font-style:italic;
+    color:#6f7f5d;
+}
 
-    .spa-card {
-        border: none;
-        border-radius: 30px;
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(10px);
-        transition: all 0.4s ease;
-        border: 1px solid rgba(225, 190, 231, 0.3);
-    }
+.spa-card{
+    border:none;
+    border-radius:30px;
+    background:rgba(255,255,255,.95);
+    transition:.3s;
+    overflow:hidden;
+}
 
-    .spa-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 30px rgba(111, 127, 93, 0.1);
-    }
+.spa-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 15px 35px rgba(0,0,0,.12);
+}
 
-    .icono-contenedor {
-        width: 60px;
-        height: 60px;
-        margin: 0 auto 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-bottom: 2px solid #e7a6b6;
-    }
+.btn-nuevo{
+    background:#6f7f5d;
+    color:white;
+    padding:12px 25px;
+    border-radius:15px;
+    text-decoration:none;
+}
 
-    .btn-nuevo {
-        background-color: #6f7f5d;
-        color: white !important;
-        border-radius: 15px;
-        padding: 10px 25px;
-        text-decoration: none;
-        transition: 0.3s;
-        display: inline-block;
-    }
+.btn-nuevo:hover{
+    background:#5a694b;
+    color:white;
+}
 
-    .btn-nuevo:hover {
-        background-color: #5a6a4a;
-        transform: scale(1.05);
-    }
+.precio{
+    color:#6f7f5d;
+    font-size:28px;
+    font-weight:bold;
+}
 
-    .precio-tag {
-        color: #6f7f5d;
-        font-weight: 700;
-        font-size: 1.5rem;
-    }
+.imagen-servicio{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
 
 </style>
 
@@ -77,18 +70,20 @@
             </h1>
 
             <p class="text-muted">
-                <i class="bi bi-stars"></i> 
+                <i class="bi bi-stars"></i>
                 Total servicios: {{ $services->count() }}
             </p>
 
         </div>
 
-        @if(Auth::user()->role->name === 'admin')
+        @if(Auth::user()->role->name == 'admin')
 
-            <a href="{{ route('services.create') }}" 
-               class="btn-nuevo shadow-sm">
-                <i class="bi bi-plus-circle-fill me-2"></i>
+            <a href="{{ route('services.create') }}" class="btn-nuevo">
+
+                <i class="bi bi-plus-circle-fill"></i>
+
                 Nuevo Servicio
+
             </a>
 
         @endif
@@ -97,73 +92,88 @@
 
     @if(session('success'))
 
-        <div class="alert alert-success border-0 shadow-sm mb-4 text-center" 
-             style="border-radius: 15px; background-color: #fdf1f4; color: #6f7f5d;">
-            
-            <i class="bi bi-check-circle-fill me-2"></i> 
+        <div class="alert alert-success">
+
             {{ session('success') }}
 
         </div>
 
     @endif
 
-    <div class="row g-4 justify-content-center">
+    <div class="row">
 
-        @forelse($services as $service)
+        @foreach($services as $service)
 
-            <div class="col-md-4">
+        @php
 
                 <div class="card h-100 spa-card shadow-sm p-4 text-center d-flex flex-column">
                     
                     <div class="icono-contenedor">
 
-                        <i class="bi bi-flower1 fs-2" 
-                           style="color: #e7a6b6;">
-                        </i>
+                'Manicure Permanente' => 'manicure permanente.jpg',
 
-                    </div>
-                    
-                    <h4 class="fuente-elegante mb-2">
+                'Pedicure Spa' => 'pedicure.jpg',
+
+                'Uñas Acrílicas (Set Completo)' => 'uñasacrilicas.jpg',
+
+                'Baño de Acrílico' => 'bañoenacrilico.jpg',
+
+                'Retiro de Permanente' => 'retirodepermanente.jpg',
+
+                'Diseño a Mano Alzada' => 'diseñoamanoalzada.jpg',
+
+            ];
+
+            $imagen = $imagenes[$service->name] ?? 'manicure.jpg';
+
+        @endphp
+
+        <div class="col-md-4 mb-4">
+
+            <div class="card spa-card shadow-sm h-100">
+
+                <img src="{{ asset('img/'.$imagen) }}"
+                     class="imagen-servicio"
+                     alt="{{ $service->name }}">
+
+                <div class="card-body text-center">
+
+                    <h4 class="fuente-elegante">
+
                         {{ $service->name }}
+
                     </h4>
-                    
-                    <p class="small mb-3" 
-                       style="color: #e7a6b6; font-weight: 500;">
 
-                        <i class="bi bi-clock-fill me-1"></i> 
-                        Duración: {{ $service->duration ?? '60' }} min
+                    <p style="color:#e7a6b6;">
+
+                        <i class="bi bi-clock-fill"></i>
+
+                        {{ $service->duration }} min
+
+                    </p>
+
+                    <p class="text-muted">
+
+                        {{ $service->description }}
 
                     </p>
 
-                    <p class="text-muted small mb-4 px-2">
+                    <div class="precio mb-3">
 
-                        {{ $service->description ?? 'Tratamiento exclusivo diseñado para tu bienestar.' }}
-
-                    </p>
-                    
-                    <div class="mb-4">
-
-                        <span class="precio-tag">
-                            ${{ number_format($service->price, 0, ',', '.') }}
-                        </span>
+                        ${{ number_format($service->price,0,',','.') }}
 
                     </div>
 
-                    @if(Auth::user()->role->name === 'admin')
+                    @if(Auth::user()->role->name=='admin')
 
-                        <div class="d-flex justify-content-center gap-2 mt-auto pt-3 border-top border-light">
+                    <div class="d-flex justify-content-center gap-2">
 
-                            <a href="{{ route('services.edit', $service) }}" 
-                               class="btn btn-sm btn-outline-secondary rounded-pill px-3">
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
+                        <a href="{{ route('services.edit',$service) }}"
+                           class="btn btn-outline-secondary rounded-pill">
 
-                            <form action="{{ route('services.destroy', $service) }}" 
-                                  method="POST" 
-                                  style="display:inline-block;">
+                            <i class="bi bi-pencil-square"></i>
 
-                                @csrf 
-                                @method('DELETE')
+                        </a>
 
                                 <button type="submit" 
                                         class="btn btn-sm btn-outline-danger rounded-pill px-3" 
@@ -171,9 +181,19 @@
                                     <i class="bi bi-trash3-fill"></i>
                                 </button>
 
-                            </form>
+                            @csrf
+                            @method('DELETE')
 
-                        </div>
+                            <button class="btn btn-outline-danger rounded-pill"
+                                    onclick="return confirm('¿Eliminar servicio?')">
+
+                                <i class="bi bi-trash"></i>
+
+                            </button>
+
+                        </form>
+
+                    </div>
 
                     @else
 
@@ -200,38 +220,25 @@
 
             </div>
 
-        @empty
+        </div>
 
-            <div class="col-12 text-center py-5">
-
-                <div class="alert shadow-sm w-50 mx-auto" 
-                     style="background: white; border-radius: 20px;">
-
-                    <i class="bi bi-info-circle fs-2 mb-3 d-block" 
-                       style="color: #e7a6b6;">
-                    </i>
-
-                    <p class="fuente-elegante fs-4">
-                        No hay servicios registrados.
-                    </p>
-
-                </div>
-
-            </div>
-
-        @endforelse
+        @endforeach
 
     </div>
 
     <div class="text-center mt-5">
 
-        <a href="{{ route('dashboard') }}" 
-           class="btn btn-link text-muted text-decoration-none">
-            <i class="bi bi-arrow-left"></i> Volver al Panel
+        <a href="{{ route('dashboard') }}"
+           class="btn btn-link text-decoration-none text-muted">
+
+            <i class="bi bi-arrow-left"></i>
+
+            Volver al Panel
+
         </a>
 
     </div>
 
 </div>
-                    
+
 @endsection

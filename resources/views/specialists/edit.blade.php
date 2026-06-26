@@ -31,7 +31,8 @@
             @endif
 
             <form action="{{ route('specialists.update',$specialist->id) }}"
-                  method="POST">
+      method="POST"
+      enctype="multipart/form-data">
 
                 @csrf
                 @method('PUT')
@@ -69,6 +70,42 @@
                         Especialidad
 
                     </label>
+                    <div class="mb-4">
+
+    <label class="fw-bold mb-2">
+
+        <i class="fas fa-image"></i>
+        Fotografía
+
+    </label>
+
+    @if($specialist->image)
+
+        <div class="mb-3">
+
+            <img src="{{ asset('storage/'.$specialist->image) }}"
+                 class="img-fluid rounded shadow"
+                 style="
+                    width:220px;
+                    height:220px;
+                    object-fit:cover;
+                    border-radius:20px;
+                 ">
+
+        </div>
+
+    @endif
+
+    <input type="file"
+           name="image"
+           class="form-control form-control-lg"
+           accept="image/*">
+
+    <small class="text-muted">
+        Selecciona una nueva imagen únicamente si deseas reemplazar la actual.
+    </small>
+
+</div>
 
                     <input type="text"
                            name="specialty"

@@ -47,76 +47,108 @@
                     </tr>
 
                 </thead>
+<tbody>
 
-                <tbody>
+@forelse($specialists as $specialist)
 
-                    @forelse($specialists as $specialist)
+<tr>
 
-                    <tr>
+    <td>
 
-                        <td>
-                            <i class="fas fa-user-nurse text-success me-2"></i>
-                            {{ $specialist->name }}
-                        </td>
+        <div class="d-flex align-items-center">
 
-                        <td>
-                            <i class="fas fa-wand-magic-sparkles me-2"
-                               style="color:#e7a6b6;"></i>
-                            {{ $specialist->specialty }}
-                        </td>
+            @if($specialist->image)
 
-                        <td class="text-center">
+                <img src="{{ asset('storage/'.$specialist->image) }}"
+                     width="70"
+                     height="70"
+                     class="rounded-circle shadow me-3"
+                     style="object-fit:cover;">
 
                             @if(Auth::user()->role && Auth::user()->role->name === 'admin')
 
                             <a href="{{ route('specialists.edit',$specialist->id) }}"
                                class="btn btn-warning btn-sm">
 
-                                <i class="fas fa-pen-to-square"></i>
+                <img src="{{ asset('img/avatar.png') }}"
+                     width="70"
+                     height="70"
+                     class="rounded-circle shadow me-3"
+                     style="object-fit:cover;">
 
-                            </a>
+            @endif
 
-                            <form action="{{ route('specialists.destroy',$specialist->id) }}"
-                                  method="POST"
-                                  class="d-inline">
+            <div>
 
-                                @csrf
-                                @method('DELETE')
+                <strong>{{ $specialist->name }}</strong>
 
                                 <button type="button"
                                         class="btn btn-danger btn-sm"
                                         onclick="Swal.fire({icon:'warning',title:'¿Eliminar especialista?',text:'Esta acción no se puede deshacer.',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí, eliminar',cancelButtonText:'Cancelar',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
 
-                                    <i class="fas fa-trash-can"></i>
+        </div>
 
-                                </button>
+    </td>
 
-                            </form>
+    <td>
 
                             @endif
 
                         </td>
 
-                    </tr>
+            {{ $specialist->specialty }}
 
-                    @empty
+        </span>
 
-                    <tr>
+    </td>
 
-                        <td colspan="3" class="text-center py-4">
+    <td class="text-center">
 
-                            <i class="fas fa-user-slash fa-2x mb-3"
-                               style="color:#e7a6b6;"></i>
+        <a href="{{ route('specialists.edit',$specialist) }}"
+           class="btn btn-warning btn-sm rounded-pill">
 
-                            <p>No hay especialistas registradas.</p>
+            <i class="fas fa-pen"></i>
 
-                        </td>
+        </a>
 
-                    </tr>
+        <form action="{{ route('specialists.destroy',$specialist) }}"
+              method="POST"
+              class="d-inline">
 
-                    @endforelse
+            @csrf
+            @method('DELETE')
 
-                </tbody>
+            <button class="btn btn-danger btn-sm rounded-pill"
+                    onclick="return confirm('¿Eliminar especialista?')">
+
+                <i class="fas fa-trash"></i>
+
+            </button>
+
+        </form>
+
+    </td>
+
+</tr>
+
+@empty
+
+<tr>
+
+    <td colspan="3" class="text-center py-5">
+
+        <i class="fas fa-user-slash fa-3x mb-3"
+           style="color:#e7a6b6;"></i>
+
+        <h5>No hay especialistas registradas.</h5>
+
+    </td>
+
+</tr>
+
+@endforelse
+
+</tbody>
 
             </table>
 

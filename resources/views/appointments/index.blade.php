@@ -42,15 +42,34 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                             <strong>Servicio:</strong>
                             {{ $a->service->name }}
                         </p>
+                        <p>
+    <strong>Servicio:</strong>
+    {{ $a->service->name }}
+</p>
+
+<p>
+    <strong>Precio:</strong>
+    ${{ number_format($a->service->price, 0, ',', '.') }}
+</p>
+
+<p>
+    <strong>Fecha:</strong>
+    {{ \Carbon\Carbon::parse($a->date)->format('d/m/Y') }}
+</p>
+
+<p>
+    <strong>Hora:</strong>
+    {{ \Carbon\Carbon::parse($a->time)->format('h:i A') }}
+</p>
 
                         <p>
                             <strong>Fecha:</strong>
-                            {{ $a->date }}
+                            {{ \Carbon\Carbon::parse($a->date)->format('d/m/Y') }}
                         </p>
 
                         <p>
                             <strong>Hora:</strong>
-                            {{ $a->time }}
+                            {{ \Carbon\Carbon::parse($a->time)->format('h:i A') }}
                         </p>
 
                         <p>
@@ -71,6 +90,12 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                                 {{ $a->worker }}
                             </span>
                         </p>
+                        <span class="badge px-4 py-2
+@if($a->status=='pendiente') bg-warning
+@elseif($a->status=='confirmada') bg-success
+@elseif($a->status=='cancelada') bg-danger
+@endif"
+style="font-size:15px;">
 
                         @php
                             $badgeClass = match($a->status) {
@@ -157,20 +182,34 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
                             @endif
 
-                        </div>
+            @csrf
+            @method('DELETE')
 
                     </div>
-
                     <div class="col-md-4 text-center">
 
-                        <i class="bi bi-heart-fill"
-                           style="font-size:70px;color:#e7a6b6;">
-                        </i>
+    @if($a->service->image)
 
-                        <h6 class="mt-3 fw-bold"
-                            style="color:#6f7f5d;">
-                            LAS DIVINAS SPA
-                        </h6>
+        <img src="{{ asset('storage/'.$a->service->image) }}"
+             class="img-fluid rounded shadow-sm"
+             style="height:180px;width:100%;object-fit:cover;">
+
+    @else
+
+        <i class="bi bi-heart-fill"
+           style="font-size:70px;color:#e7a6b6;">
+        </i>
+
+    @endif
+
+    <h6 class="mt-3 fw-bold"
+        style="color:#6f7f5d;">
+
+        {{ $a->service->name }}
+
+    </h6>
+
+</div>
 
                     </div>
 

@@ -72,6 +72,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
         <div class="card border-0 shadow-sm h-100"
              style="border-radius:25px;">
+             <div class="text-center">
 
             <div class="text-center py-4"
                  style="background:#fdf1f4;height:180px;display:flex;align-items:center;justify-content:center;overflow:hidden;">
@@ -86,7 +87,14 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                     </i>
                 @endif
 
-            </div>
+    @else
+
+        <i class="bi bi-box-seam"
+           style="font-size:80px; color:#e7a6b6;"></i>
+
+    @endif
+
+</div>
 
             <div class="card-body">
 
@@ -121,27 +129,27 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                             {{ $item->stock }}
                         </span>
 
-                    @else
+@else
 
                         <span class="badge bg-success">
                             {{ $item->stock }}
                         </span>
 
-                    @endif
+@endif
 
                 </p>
 
                 @if($item->stock <= 3)
 
-                    <div class="alert alert-danger py-2">
+<div class="alert alert-danger py-2">
 
-                        <i class="bi bi-exclamation-triangle-fill"></i>
+    <i class="bi bi-exclamation-triangle-fill"></i>
 
-                        Stock bajo
+    Stock bajo
 
-                    </div>
+</div>
 
-                @endif
+@endif
 
             </div>
 

@@ -18,7 +18,7 @@ use App\Http\Controllers\SpecialistController;
 */
 
 // Página principal
-Route::get('/', fn () => view('welcome'));
+Route::get('/', fn() => view('welcome'));
 
 // Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])
@@ -26,16 +26,20 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
 // Perfil
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth'])->group(function () {
 
-    Route::get('/profile', [ProfileController::class, 'edit'])
-        ->name('profile.edit');
+    Route::patch(
+        '/appointments/{appointment}/cancel',
+        [AppointmentController::class, 'cancel']
+    )->name('appointments.cancel');
 
-    Route::patch('/profile', [ProfileController::class, 'update'])
-        ->name('profile.update');
+    Route::resource('appointments', AppointmentController::class);
 
-    Route::delete('/profile', [ProfileController::class, 'destroy'])
-        ->name('profile.destroy');
+    Route::get(
+        '/appointments/calendar',
+        [AppointmentController::class, 'calendar']
+    )
+        ->name('appointments.calendar');
 });
 
 // Registro
@@ -127,26 +131,36 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Reportes
-Route::get('/reportes/citas',
-[DashboardController::class, 'reportes'])
-->middleware(['auth','role:admin'])
-->name('reportes.citas');
+Route::get(
+    '/reportes/citas',
+    [DashboardController::class, 'reportes']
+)
+    ->middleware(['auth', 'role:admin'])
+    ->name('reportes.citas');
 
-Route::get('/reportes/servicios',
-    [DashboardController::class, 'serviciosMasSolicitados'])
-    ->middleware(['auth','role:admin'])
+Route::get(
+    '/reportes/servicios',
+    [DashboardController::class, 'serviciosMasSolicitados']
+)
+    ->middleware(['auth', 'role:admin'])
     ->name('reportes.servicios');
-    Route::get('/reportes/especialistas',
-    [DashboardController::class, 'especialistasMasSolicitadas'])
-    ->middleware(['auth','role:admin'])
+Route::get(
+    '/reportes/especialistas',
+    [DashboardController::class, 'especialistasMasSolicitadas']
+)
+    ->middleware(['auth', 'role:admin'])
     ->name('reportes.especialistas');
-    Route::get('/reportes/inventario-bajo',
-    [DashboardController::class, 'inventarioBajo'])
-    ->middleware(['auth','role:admin'])
+Route::get(
+    '/reportes/inventario-bajo',
+    [DashboardController::class, 'inventarioBajo']
+)
+    ->middleware(['auth', 'role:admin'])
     ->name('reportes.inventario');
-    Route::get('/reportes/ingresos',
-    [DashboardController::class, 'ingresosEstimados'])
-    ->middleware(['auth','role:admin'])
+Route::get(
+    '/reportes/ingresos',
+    [DashboardController::class, 'ingresosEstimados']
+)
+    ->middleware(['auth', 'role:admin'])
     ->name('reportes.ingresos');
 
 // Exportes PDF y Excel
@@ -164,4 +178,4 @@ Route::middleware(['auth','role:admin'])->group(function () {
 });
 
 // Autenticación
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -110,11 +110,11 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
 
-                        </div>
+<h4 class="mb-0">
 
-                        <div class="row">
+<i class="bi bi-pencil-fill"></i>
 
-                            <div class="col-md-6 mb-4">
+Actualizar Información
 
                                 <label class="fw-bold mb-2">
                                     Precio
@@ -132,9 +132,12 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
 
-                            </div>
+<div class="card-body">
 
-                            <div class="col-md-6 mb-4">
+<form
+action="{{ route('services.update',$service) }}"
+method="POST"
+enctype="multipart/form-data">
 
                                 <label class="fw-bold mb-2">
                                     Duración (minutos)
@@ -152,9 +155,14 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
 
-                            </div>
+    <input
+        type="text"
+        name="name"
+        class="form-control form-control-lg"
+        value="{{ old('name',$service->name) }}"
+        required>
 
-                        </div>
+</div>
 
                         <div class="d-flex gap-3">
 
@@ -175,17 +183,145 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
                             </a>
 
-                        </div>
+</div>
 
-                    </form>
+<div class="row">
 
-                </div>
+    <div class="col-md-6 mb-4">
 
-            </div>
+        <label class="fw-bold mb-2">
+            Precio
+        </label>
 
-        </div>
+        <input
+            type="number"
+            step="0.01"
+            name="price"
+            class="form-control form-control-lg"
+            value="{{ old('price',$service->price) }}"
+            required>
 
     </div>
+
+    <div class="col-md-6 mb-4">
+
+        <label class="fw-bold mb-2">
+            Duración (minutos)
+        </label>
+
+        <input
+            type="number"
+            name="duration"
+            class="form-control form-control-lg"
+            value="{{ old('duration',$service->duration) }}"
+            required>
+
+    </div>
+
+</div>
+
+<div class="mb-4">
+
+    <label class="fw-bold mb-2">
+        Estado
+    </label>
+
+    <select
+        name="status"
+        class="form-select form-select-lg">
+
+        <option value="1"
+            {{ $service->status ? 'selected' : '' }}>
+            Activo
+        </option>
+
+        <option value="0"
+            {{ !$service->status ? 'selected' : '' }}>
+            Inactivo
+        </option>
+
+    </select>
+
+</div>
+
+<div class="mb-4">
+
+    <label class="fw-bold mb-2">
+        Imagen del Servicio
+    </label>
+
+    @if($service->image)
+
+        <div class="mb-3">
+
+            <img
+                src="{{ asset('storage/'.$service->image) }}"
+                class="img-fluid rounded shadow"
+                style="max-width:250px;">
+
+        </div>
+        @if($service->image)
+
+    <div class="form-check mb-3">
+        <input class="form-check-input"
+               type="checkbox"
+               name="remove_image"
+               value="1"
+               id="remove_image">
+
+        <label class="form-check-label" for="remove_image">
+            Eliminar imagen actual
+        </label>
+    </div>
+
+@endif
+
+    @endif
+
+    <input
+        type="file"
+        name="image"
+        class="form-control"
+        accept="image/png,image/jpeg,image/jpg">
+
+    <small class="text-muted">
+        Si no deseas cambiar la imagen, deja este campo vacío.
+    </small>
+
+</div>
+<div class="d-flex gap-3 mt-4">
+
+    <button
+        type="submit"
+        class="btn btn-lg btn-spa">
+
+        <i class="bi bi-check-circle-fill"></i>
+
+        Guardar Cambios
+
+    </button>
+
+    <a
+        href="{{ route('services.index') }}"
+        class="btn btn-lg btn-outline-secondary">
+
+        <i class="bi bi-x-circle"></i>
+
+        Cancelar
+
+    </a>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 </div>
 
