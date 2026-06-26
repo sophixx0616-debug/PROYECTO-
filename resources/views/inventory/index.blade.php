@@ -25,6 +25,8 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
     </div>
 
+    @if(Auth::user()->role && Auth::user()->role->name === 'admin')
+
     <a href="{{ route('inventory.create') }}"
        class="btn text-white px-4 py-2"
        style="
@@ -37,6 +39,8 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
         Nuevo Producto
 
     </a>
+
+    @endif
 
 </div>
 
@@ -141,6 +145,8 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
             </div>
 
+            @if(Auth::user()->role && Auth::user()->role->name === 'admin')
+
             <div class="card-footer bg-white border-0 pb-4">
 
                 <a href="{{ route('inventory.edit',$item->id) }}"
@@ -168,6 +174,8 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                 </form>
 
             </div>
+
+            @endif
 
         </div>
 

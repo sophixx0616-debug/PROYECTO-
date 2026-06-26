@@ -130,10 +130,6 @@ class AppointmentController extends \Illuminate\Routing\Controller
 
         $data = $request->validated();
 
-        if (Auth::user()->role->name !== 'admin') {
-            unset($data['status']);
-        }
-
         $appointment->update($data);
 
         return redirect()
@@ -152,6 +148,27 @@ class AppointmentController extends \Illuminate\Routing\Controller
         return redirect()
             ->route('appointments.index')
             ->with('success', 'Cita cancelada correctamente');
+    }
+
+    public function quickStatus(Request $request, Appointment $appointment)
+    {
+        if (Auth::user()->role->name !== 'admin' && $appointment->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $request->validate([
+            'status' => 'required|in:pendiente,confirmada,cancelada'
+        ]);
+
+        if (Auth::user()->role->name !== 'admin' && $request->status === 'confirmada') {
+            abort(403, 'Solo el administrador puede confirmar citas.');
+        }
+
+        $appointment->update(['status' => $request->status]);
+
+        return redirect()
+            ->route('appointments.index')
+            ->with('success', 'Estado de la cita actualizado correctamente');
     }
 
     public function destroy(Appointment $appointment)

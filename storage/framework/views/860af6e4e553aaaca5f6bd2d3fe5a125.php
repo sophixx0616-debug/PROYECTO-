@@ -78,69 +78,93 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                             </span>
                         </p>
 
-                        <span class="badge px-4 py-2"
-                              style="background:#e7a6b6;font-size:15px;">
+                        <?php
+                            $badgeClass = match($a->status) {
+                                'confirmada' => 'badge-confirmada',
+                                'pendiente'  => 'badge-pendiente',
+                                default      => 'badge-cancelada',
+                            };
+                        ?>
+
+                        <span class="<?php echo e($badgeClass); ?>" style="font-size:15px;">
                             <?php echo e($a->status); ?>
 
                         </span>
 
-                        <?php if($a->status !== 'cancelada' && (!auth()->user()->role || auth()->user()->role->name !== 'admin')): ?>
+                        <div class="mt-3 d-flex gap-2 flex-wrap">
 
-                        <div class="mt-3 d-flex gap-2">
+                            <?php if(auth()->user()->role && auth()->user()->role->name === 'admin'): ?>
 
-                            <form action="<?php echo e(route('appointments.cancel', $a->id)); ?>"
-                                  method="POST"
-                                  onsubmit="return confirm('¿Deseas cancelar esta cita?')">
+                                <?php if($a->status !== 'pendiente'): ?>
+                                <form action="<?php echo e(route('appointments.status', $a->id)); ?>" method="POST" class="d-inline">
+                                    <?php echo csrf_field(); ?>
+                                    <?php echo method_field('PATCH'); ?>
+                                    <input type="hidden" name="status" value="pendiente">
+                                    <button type="button" class="btn btn-outline-secondary"
+                                        onclick="Swal.fire({icon:'question',title:'¿Marcar como Pendiente?',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí',cancelButtonText:'No',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
+                                        <i class="bi bi-clock"></i> Pendiente
+                                    </button>
+                                </form>
+                                <?php endif; ?>
 
-                                <?php echo csrf_field(); ?>
-                                <?php echo method_field('PATCH'); ?>
+                                <?php if($a->status !== 'confirmada'): ?>
+                                <form action="<?php echo e(route('appointments.status', $a->id)); ?>" method="POST" class="d-inline">
+                                    <?php echo csrf_field(); ?>
+                                    <?php echo method_field('PATCH'); ?>
+                                    <input type="hidden" name="status" value="confirmada">
+                                    <button type="button" class="btn btn-outline-success"
+                                        onclick="Swal.fire({icon:'question',title:'¿Confirmar cita?',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí',cancelButtonText:'No',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
+                                        <i class="bi bi-check-circle"></i> Confirmar
+                                    </button>
+                                </form>
+                                <?php endif; ?>
 
-                                <button type="submit"
-                                        class="btn btn-outline-danger">
+                                <?php if($a->status !== 'cancelada'): ?>
+                                <form action="<?php echo e(route('appointments.status', $a->id)); ?>" method="POST" class="d-inline">
+                                    <?php echo csrf_field(); ?>
+                                    <?php echo method_field('PATCH'); ?>
+                                    <input type="hidden" name="status" value="cancelada">
+                                    <button type="button" class="btn btn-outline-danger"
+                                        onclick="Swal.fire({icon:'warning',title:'¿Cancelar cita?',text:'Esta acción no se puede deshacer.',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí, cancelar',cancelButtonText:'Volver',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
+                                        <i class="bi bi-x-circle"></i> Cancelar
+                                    </button>
+                                </form>
+                                <?php endif; ?>
 
-                                    <i class="bi bi-x-circle"></i>
-                                    Cancelar
+                                <a href="<?php echo e(route('appointments.edit', $a->id)); ?>" class="btn btn-warning">
+                                    <i class="bi bi-pencil-square"></i> Editar
+                                </a>
 
-                                </button>
+                                <form action="<?php echo e(route('appointments.destroy', $a->id)); ?>" method="POST" class="d-inline">
+                                    <?php echo csrf_field(); ?>
+                                    <?php echo method_field('DELETE'); ?>
+                                    <button type="button" class="btn btn-danger"
+                                        onclick="Swal.fire({icon:'warning',title:'¿Eliminar cita?',text:'Esta acción no se puede deshacer.',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí, eliminar',cancelButtonText:'Cancelar',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </button>
+                                </form>
 
-                            </form>
+                            <?php else: ?>
+
+                                <?php if($a->status !== 'cancelada'): ?>
+                                <form action="<?php echo e(route('appointments.status', $a->id)); ?>" method="POST" class="d-inline">
+                                    <?php echo csrf_field(); ?>
+                                    <?php echo method_field('PATCH'); ?>
+                                    <input type="hidden" name="status" value="cancelada">
+                                    <button type="button" class="btn btn-outline-danger"
+                                        onclick="Swal.fire({icon:'warning',title:'¿Cancelar cita?',text:'Esta acción no se puede deshacer.',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí, cancelar',cancelButtonText:'Volver',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
+                                        <i class="bi bi-x-circle"></i> Cancelar
+                                    </button>
+                                </form>
+                                <?php endif; ?>
+
+                                <a href="<?php echo e(route('appointments.edit', $a->id)); ?>" class="btn btn-warning">
+                                    <i class="bi bi-pencil-square"></i> Editar
+                                </a>
+
+                            <?php endif; ?>
 
                         </div>
-
-                        <?php endif; ?>
-
-                        <?php if(auth()->user()->role && auth()->user()->role->name === 'admin'): ?>
-
-                        <div class="mt-3 d-flex gap-2">
-
-                            <a href="<?php echo e(route('appointments.edit', $a->id)); ?>"
-                               class="btn btn-warning">
-
-                                <i class="bi bi-pencil-square"></i>
-                                Editar
-
-                            </a>
-
-                            <form action="<?php echo e(route('appointments.destroy', $a->id)); ?>"
-                                  method="POST"
-                                  onsubmit="return confirm('¿Deseas eliminar esta cita?')">
-
-                                <?php echo csrf_field(); ?>
-                                <?php echo method_field('DELETE'); ?>
-
-                                <button type="submit"
-                                        class="btn btn-danger">
-
-                                    <i class="bi bi-trash"></i>
-                                    Eliminar
-
-                                </button>
-
-                            </form>
-
-                        </div>
-
-                        <?php endif; ?>
 
                     </div>
 

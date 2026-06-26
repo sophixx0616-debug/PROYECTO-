@@ -47,16 +47,48 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegisteredUserController::class, 'store']);
 });
 
-// Administrador
+// Usuarios (solo admin)
 Route::middleware(['auth', 'role:admin'])->group(function () {
-
     Route::resource('users', UserController::class);
+});
 
-    Route::resource('services', ServiceController::class);
+// Servicios - lectura todos, escritura solo admin
+Route::middleware(['auth'])->group(function () {
+    Route::get('/services', [ServiceController::class, 'index'])->name('services.index');
+});
 
-    Route::resource('inventory', InventoryController::class);
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/services/create', [ServiceController::class, 'create'])->name('services.create');
+    Route::post('/services', [ServiceController::class, 'store'])->name('services.store');
+    Route::get('/services/{service}/edit', [ServiceController::class, 'edit'])->name('services.edit');
+    Route::put('/services/{service}', [ServiceController::class, 'update'])->name('services.update');
+    Route::delete('/services/{service}', [ServiceController::class, 'destroy'])->name('services.destroy');
+});
 
-    Route::resource('specialists', SpecialistController::class);
+// Inventario - lectura todos, escritura solo admin
+Route::middleware(['auth'])->group(function () {
+    Route::get('/inventory', [InventoryController::class, 'index'])->name('inventory.index');
+});
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/inventory/create', [InventoryController::class, 'create'])->name('inventory.create');
+    Route::post('/inventory', [InventoryController::class, 'store'])->name('inventory.store');
+    Route::get('/inventory/{inventory}/edit', [InventoryController::class, 'edit'])->name('inventory.edit');
+    Route::put('/inventory/{inventory}', [InventoryController::class, 'update'])->name('inventory.update');
+    Route::delete('/inventory/{inventory}', [InventoryController::class, 'destroy'])->name('inventory.destroy');
+});
+
+// Especialistas - lectura todos, escritura solo admin
+Route::middleware(['auth'])->group(function () {
+    Route::get('/specialists', [SpecialistController::class, 'index'])->name('specialists.index');
+});
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/specialists/create', [SpecialistController::class, 'create'])->name('specialists.create');
+    Route::post('/specialists', [SpecialistController::class, 'store'])->name('specialists.store');
+    Route::get('/specialists/{specialist}/edit', [SpecialistController::class, 'edit'])->name('specialists.edit');
+    Route::put('/specialists/{specialist}', [SpecialistController::class, 'update'])->name('specialists.update');
+    Route::delete('/specialists/{specialist}', [SpecialistController::class, 'destroy'])->name('specialists.destroy');
 });
 
 // Citas
@@ -69,6 +101,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::patch('/appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])
         ->name('appointments.cancel');
+
+    Route::patch('/appointments/{appointment}/status', [AppointmentController::class, 'quickStatus'])
+        ->name('appointments.status');
+
 });
 
 // Carrito
@@ -112,6 +148,20 @@ Route::get('/reportes/servicios',
     [DashboardController::class, 'ingresosEstimados'])
     ->middleware(['auth','role:admin'])
     ->name('reportes.ingresos');
+
+// Exportes PDF y Excel
+Route::middleware(['auth','role:admin'])->group(function () {
+    Route::get('/reportes/citas/pdf', [DashboardController::class, 'exportCitasPDF'])->name('reportes.citas.pdf');
+    Route::get('/reportes/citas/excel', [DashboardController::class, 'exportCitasExcel'])->name('reportes.citas.excel');
+    Route::get('/reportes/servicios/pdf', [DashboardController::class, 'exportServiciosPDF'])->name('reportes.servicios.pdf');
+    Route::get('/reportes/servicios/excel', [DashboardController::class, 'exportServiciosExcel'])->name('reportes.servicios.excel');
+    Route::get('/reportes/especialistas/pdf', [DashboardController::class, 'exportEspecialistasPDF'])->name('reportes.especialistas.pdf');
+    Route::get('/reportes/especialistas/excel', [DashboardController::class, 'exportEspecialistasExcel'])->name('reportes.especialistas.excel');
+    Route::get('/reportes/inventario/pdf', [DashboardController::class, 'exportInventarioPDF'])->name('reportes.inventario.pdf');
+    Route::get('/reportes/inventario/excel', [DashboardController::class, 'exportInventarioExcel'])->name('reportes.inventario.excel');
+    Route::get('/reportes/ingresos/pdf', [DashboardController::class, 'exportIngresosPDF'])->name('reportes.ingresos.pdf');
+    Route::get('/reportes/ingresos/excel', [DashboardController::class, 'exportIngresosExcel'])->name('reportes.ingresos.excel');
+});
 
 // Autenticación
 require __DIR__.'/auth.php';

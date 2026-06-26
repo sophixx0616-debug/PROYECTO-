@@ -102,8 +102,6 @@
 
             </div>
 
-            @if(auth()->user()->role && auth()->user()->role->name === 'admin')
-
             <div class="mb-4">
 
                 <label class="form-label fw-bold">
@@ -119,7 +117,8 @@
                     </option>
 
                     <option value="confirmada"
-                    {{ $appointment->status == 'confirmada' ? 'selected' : '' }}>
+                    {{ $appointment->status == 'confirmada' ? 'selected' : '' }}
+                    {{ auth()->user()->role->name !== 'admin' ? 'disabled' : '' }}>
                         Confirmada
                     </option>
 
@@ -130,9 +129,11 @@
 
                 </select>
 
-            </div>
+                @if(auth()->user()->role->name !== 'admin')
+                <small class="text-muted">Solo el administrador puede confirmar citas.</small>
+                @endif
 
-            @endif
+            </div>
 
             <button type="submit"
                     class="btn text-white"

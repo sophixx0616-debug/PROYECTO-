@@ -11,6 +11,8 @@
             Gestión de Especialistas
         </h1>
 
+        <?php if(Auth::user()->role && Auth::user()->role->name === 'admin'): ?>
+
         <a href="<?php echo e(route('specialists.create')); ?>"
            class="btn text-white"
            style="background:#6f7f5d;border-radius:12px;">
@@ -19,6 +21,8 @@
             Nueva Especialista
 
         </a>
+
+        <?php endif; ?>
 
     </div>
 
@@ -66,6 +70,8 @@
 
                         <td class="text-center">
 
+                            <?php if(Auth::user()->role && Auth::user()->role->name === 'admin'): ?>
+
                             <a href="<?php echo e(route('specialists.edit',$specialist->id)); ?>"
                                class="btn btn-warning btn-sm">
 
@@ -89,6 +95,8 @@
                                 </button>
 
                             </form>
+
+                            <?php endif; ?>
 
                         </td>
 

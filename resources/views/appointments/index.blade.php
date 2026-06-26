@@ -72,70 +72,92 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                             </span>
                         </p>
 
-                        <span class="badge px-4 py-2"
-                              style="background:#e7a6b6;font-size:15px;">
+                        @php
+                            $badgeClass = match($a->status) {
+                                'confirmada' => 'badge-confirmada',
+                                'pendiente'  => 'badge-pendiente',
+                                default      => 'badge-cancelada',
+                            };
+                        @endphp
+
+                        <span class="{{ $badgeClass }}" style="font-size:15px;">
                             {{ $a->status }}
                         </span>
 
-                        @if($a->status !== 'cancelada' && (!auth()->user()->role || auth()->user()->role->name !== 'admin'))
+                        <div class="mt-3 d-flex gap-2 flex-wrap">
 
-                        <div class="mt-3 d-flex gap-2">
+                            @if(auth()->user()->role && auth()->user()->role->name === 'admin')
 
-                            <form action="{{ route('appointments.cancel', $a->id) }}"
-                                  method="POST"
-                                  class="d-inline">
+                                @if($a->status !== 'pendiente')
+                                <form action="{{ route('appointments.status', $a->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="hidden" name="status" value="pendiente">
+                                    <button type="button" class="btn btn-outline-secondary"
+                                        onclick="Swal.fire({icon:'question',title:'¿Marcar como Pendiente?',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí',cancelButtonText:'No',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
+                                        <i class="bi bi-clock"></i> Pendiente
+                                    </button>
+                                </form>
+                                @endif
 
-                                @csrf
-                                @method('PATCH')
+                                @if($a->status !== 'confirmada')
+                                <form action="{{ route('appointments.status', $a->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="hidden" name="status" value="confirmada">
+                                    <button type="button" class="btn btn-outline-success"
+                                        onclick="Swal.fire({icon:'question',title:'¿Confirmar cita?',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí',cancelButtonText:'No',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
+                                        <i class="bi bi-check-circle"></i> Confirmar
+                                    </button>
+                                </form>
+                                @endif
 
-                                <button type="button"
-                                        class="btn btn-outline-danger"
+                                @if($a->status !== 'cancelada')
+                                <form action="{{ route('appointments.status', $a->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="hidden" name="status" value="cancelada">
+                                    <button type="button" class="btn btn-outline-danger"
                                         onclick="Swal.fire({icon:'warning',title:'¿Cancelar cita?',text:'Esta acción no se puede deshacer.',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí, cancelar',cancelButtonText:'Volver',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
+                                        <i class="bi bi-x-circle"></i> Cancelar
+                                    </button>
+                                </form>
+                                @endif
 
-                                    <i class="bi bi-x-circle"></i>
-                                    Cancelar
+                                <a href="{{ route('appointments.edit', $a->id) }}" class="btn btn-warning">
+                                    <i class="bi bi-pencil-square"></i> Editar
+                                </a>
 
-                                </button>
-
-                            </form>
-
-                        </div>
-
-                        @endif
-
-                        @if(auth()->user()->role && auth()->user()->role->name === 'admin')
-
-                        <div class="mt-3 d-flex gap-2">
-
-                            <a href="{{ route('appointments.edit', $a->id) }}"
-                               class="btn btn-warning">
-
-                                <i class="bi bi-pencil-square"></i>
-                                Editar
-
-                            </a>
-
-                            <form action="{{ route('appointments.destroy', $a->id) }}"
-                                  method="POST"
-                                  class="d-inline">
-
-                                @csrf
-                                @method('DELETE')
-
-                                <button type="button"
-                                        class="btn btn-danger"
+                                <form action="{{ route('appointments.destroy', $a->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="button" class="btn btn-danger"
                                         onclick="Swal.fire({icon:'warning',title:'¿Eliminar cita?',text:'Esta acción no se puede deshacer.',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí, eliminar',cancelButtonText:'Cancelar',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </button>
+                                </form>
 
-                                    <i class="bi bi-trash"></i>
-                                    Eliminar
+                            @else
 
-                                </button>
+                                @if($a->status !== 'cancelada')
+                                <form action="{{ route('appointments.status', $a->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="hidden" name="status" value="cancelada">
+                                    <button type="button" class="btn btn-outline-danger"
+                                        onclick="Swal.fire({icon:'warning',title:'¿Cancelar cita?',text:'Esta acción no se puede deshacer.',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí, cancelar',cancelButtonText:'Volver',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
+                                        <i class="bi bi-x-circle"></i> Cancelar
+                                    </button>
+                                </form>
+                                @endif
 
-                            </form>
+                                <a href="{{ route('appointments.edit', $a->id) }}" class="btn btn-warning">
+                                    <i class="bi bi-pencil-square"></i> Editar
+                                </a>
+
+                            @endif
 
                         </div>
-
-                        @endif
 
                     </div>
 

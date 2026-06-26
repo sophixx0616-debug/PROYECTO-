@@ -11,6 +11,8 @@
             Gestión de Especialistas
         </h1>
 
+        @if(Auth::user()->role && Auth::user()->role->name === 'admin')
+
         <a href="{{ route('specialists.create') }}"
            class="btn text-white"
            style="background:#6f7f5d;border-radius:12px;">
@@ -19,6 +21,8 @@
             Nueva Especialista
 
         </a>
+
+        @endif
 
     </div>
 
@@ -63,6 +67,8 @@
 
                         <td class="text-center">
 
+                            @if(Auth::user()->role && Auth::user()->role->name === 'admin')
+
                             <a href="{{ route('specialists.edit',$specialist->id) }}"
                                class="btn btn-warning btn-sm">
 
@@ -86,6 +92,8 @@
                                 </button>
 
                             </form>
+
+                            @endif
 
                         </td>
 

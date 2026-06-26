@@ -84,11 +84,16 @@
 
                         <td>
 
-                            <span class="badge"
-                                  style="background:#e7a6b6;">
+                            @php
+                                $badgeClass = match($cita->status) {
+                                    'confirmada' => 'badge-confirmada',
+                                    'pendiente'  => 'badge-pendiente',
+                                    default      => 'badge-cancelada',
+                                };
+                            @endphp
 
+                            <span class="{{ $badgeClass }}">
                                 {{ $cita->status }}
-
                             </span>
 
                         </td>
@@ -119,7 +124,23 @@
 
 </div>
 
-<div class="text-center mt-4">
+<div class="text-center mt-4 d-flex gap-2 justify-content-center flex-wrap">
+
+    <a href="{{ route('reportes.citas.pdf') }}"
+       class="btn btn-danger">
+
+        <i class="fas fa-file-pdf"></i>
+        Exportar PDF
+
+    </a>
+
+    <a href="{{ route('reportes.citas.excel') }}"
+       class="btn btn-success">
+
+        <i class="fas fa-file-excel"></i>
+        Exportar Excel
+
+    </a>
 
     <a href="{{ route('dashboard') }}"
        class="btn text-white"

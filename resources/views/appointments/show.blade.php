@@ -30,7 +30,14 @@
                     <p><strong>Cliente:</strong> {{ $appointment->user->name ?? 'N/A' }}</p>
                     <p>
                         <strong>Estado:</strong>
-                        <span class="badge px-3 py-2" style="background:#e7a6b6;">
+                        @php
+                            $badgeClass = match($appointment->status) {
+                                'confirmada' => 'badge-confirmada',
+                                'pendiente'  => 'badge-pendiente',
+                                default      => 'badge-cancelada',
+                            };
+                        @endphp
+                        <span class="{{ $badgeClass }}">
                             {{ $appointment->status }}
                         </span>
                     </p>

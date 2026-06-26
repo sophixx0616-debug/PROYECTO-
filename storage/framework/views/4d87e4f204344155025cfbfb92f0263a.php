@@ -104,7 +104,7 @@
                                                 <form action="<?php echo e(route('cart.remove', $id)); ?>" method="POST" style="display:inline-block;">
                                                     <?php echo csrf_field(); ?> 
                                                     <?php echo method_field('DELETE'); ?>
-                                                    <button type="submit" class="btn btn-sm text-danger opacity-70 hover:opacity-100" onclick="return confirm('¿Quitar de la bolsa?')">
+                                                    <button type="button" class="btn btn-sm text-danger opacity-70 hover:opacity-100" onclick="Swal.fire({icon:'warning',title:'¿Quitar de la bolsa?',text:'Este producto será eliminado de tu bolsa.',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí, quitar',cancelButtonText:'Cancelar',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
                                                         <i class="bi bi-trash3-fill fs-5"></i>
                                                     </button>
                                                 </form>
@@ -127,7 +127,7 @@
                                 </a>
                                 <form action="<?php echo e(route('cart.checkout')); ?>" method="POST" style="display:inline;">
                                     <?php echo csrf_field(); ?>
-                                    <button type="submit" class="btn btn-confirmar shadow-sm fw-bold" onclick="return confirm('¿Finalizar pedido? Los productos y servicios seleccionados serán procesados.')">
+                                    <button type="button" class="btn btn-confirmar shadow-sm fw-bold" onclick="Swal.fire({icon:'question',title:'¿Finalizar pedido?',text:'Los productos y servicios seleccionados serán procesados.',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí, finalizar',cancelButtonText:'Cancelar',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
                                         <i class="bi bi-credit-card-2-back-fill me-2"></i> Finalizar Pedido
                                     </button>
                                 </form>

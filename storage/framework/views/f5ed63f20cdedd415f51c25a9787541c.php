@@ -62,7 +62,23 @@
 
     </div>
 
-    <div class="mt-3">
+    <div class="mt-3 d-flex gap-2">
+
+        <a href="<?php echo e(route('reportes.servicios.pdf')); ?>"
+           class="btn btn-danger">
+
+            <i class="fas fa-file-pdf"></i>
+            PDF
+
+        </a>
+
+        <a href="<?php echo e(route('reportes.servicios.excel')); ?>"
+           class="btn btn-success">
+
+            <i class="fas fa-file-excel"></i>
+            Excel
+
+        </a>
 
         <a href="<?php echo e(route('dashboard')); ?>"
            class="btn btn-secondary">

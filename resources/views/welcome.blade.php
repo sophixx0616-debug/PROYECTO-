@@ -812,7 +812,11 @@ Te asesoramos para lograr el diseño perfecto.
 
             <i class="bi bi-facebook me-3"></i>
             <i class="bi bi-instagram me-3"></i>
-            <i class="bi bi-whatsapp"></i>
+            <a href="{{ config('business.whatsapp_url') }}"
+               target="_blank"
+               style="color:#25d366;text-decoration:none;">
+                <i class="bi bi-whatsapp"></i>
+            </a>
 
         </div>
 

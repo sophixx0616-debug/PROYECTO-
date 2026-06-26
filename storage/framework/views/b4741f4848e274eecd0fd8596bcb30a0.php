@@ -27,6 +27,28 @@
             background:#fdf8f8;
             min-height:100vh;
         }
+        .whatsapp-float{
+            position:fixed;
+            bottom:25px;
+            right:25px;
+            width:60px;
+            height:60px;
+            background:#25d366;
+            color:white;
+            border-radius:50%;
+            text-align:center;
+            font-size:32px;
+            line-height:60px;
+            box-shadow:0 4px 15px rgba(37,211,102,.4);
+            z-index:999;
+            transition:.3s;
+            text-decoration:none;
+        }
+        .whatsapp-float:hover{
+            transform:scale(1.1);
+            color:white;
+            box-shadow:0 6px 20px rgba(37,211,102,.6);
+        }
         .is-invalid{
             border-color:#dc3545 !important;
             box-shadow:0 0 0 0.2rem rgba(220,53,69,.25) !important;
@@ -35,6 +57,27 @@
             color:#dc3545;
             font-size:0.875em;
             margin-top:0.25rem;
+        }
+        .badge-confirmada{
+            background:#6f7f5d;
+            color:white;
+            padding:8px 14px;
+            border-radius:20px;
+            font-size:15px;
+        }
+        .badge-pendiente{
+            background:#e7a6b6;
+            color:white;
+            padding:8px 14px;
+            border-radius:20px;
+            font-size:15px;
+        }
+        .badge-cancelada{
+            background:#c85c5c;
+            color:white;
+            padding:8px 14px;
+            border-radius:20px;
+            font-size:15px;
         }
     </style>
 
@@ -49,6 +92,13 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <a href="<?php echo e(config('business.whatsapp_url')); ?>"
+       target="_blank"
+       class="whatsapp-float"
+       title="Contáctanos por WhatsApp">
+        <i class="bi bi-whatsapp"></i>
+    </a>
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {

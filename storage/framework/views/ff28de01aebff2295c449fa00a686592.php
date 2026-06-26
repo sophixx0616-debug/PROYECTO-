@@ -108,13 +108,6 @@
 </li>
 
                     
-                    <?php if(Auth::user()->role && Auth::user()->role->name === 'admin'): ?>
-<li class="nav-item">
-    <a class="nav-link" href="<?php echo e(route('users.index')); ?>">
-        <i class="fas fa-users"></i> Usuarios
-    </a>
-</li>
-
 <li class="nav-item">
     <a class="nav-link" href="<?php echo e(route('services.index')); ?>">
         <i class="fas fa-spa"></i> Servicios
@@ -125,6 +118,15 @@
         <i class="fas fa-user-tie"></i> Especialistas
     </a>
 </li>
+
+                    
+                    <?php if(Auth::user()->role && Auth::user()->role->name === 'admin'): ?>
+<li class="nav-item">
+    <a class="nav-link" href="<?php echo e(route('users.index')); ?>">
+        <i class="fas fa-users"></i> Usuarios
+    </a>
+</li>
+
 <li class="nav-item">
     <a class="nav-link" href="<?php echo e(route('inventory.index')); ?>">
         <i class="fas fa-box"></i> Inventario
@@ -152,6 +154,14 @@
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo e(route('register')); ?>">
                             Registrarse
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo e(config('business.whatsapp_url')); ?>"
+                           target="_blank"
+                           style="color:#25d366 !important;">
+                            <i class="bi bi-whatsapp"></i> WhatsApp
                         </a>
                     </li>
 

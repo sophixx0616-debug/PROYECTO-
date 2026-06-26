@@ -90,11 +90,16 @@
 
                         <td>
 
-                            <span class="badge"
-                                  style="background:#e7a6b6;">
+                            <?php
+                                $badgeClass = match($cita->status) {
+                                    'confirmada' => 'badge-confirmada',
+                                    'pendiente'  => 'badge-pendiente',
+                                    default      => 'badge-cancelada',
+                                };
+                            ?>
 
+                            <span class="<?php echo e($badgeClass); ?>">
                                 <?php echo e($cita->status); ?>
-
 
                             </span>
 

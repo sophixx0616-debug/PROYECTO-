@@ -128,5 +128,52 @@ body{
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        <?php if(session('success')): ?>
+            Swal.fire({
+                icon: 'success',
+                title: '¡Éxito!',
+                text: '<?php echo e(session('success')); ?>',
+                confirmButtonColor: '#6f7f5d',
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: { popup: 'rounded-4' }
+            });
+        <?php endif; ?>
+        <?php if(session('error')): ?>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '<?php echo e(session('error')); ?>',
+                confirmButtonColor: '#6f7f5d',
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: { popup: 'rounded-4' }
+            });
+        <?php endif; ?>
+        <?php if(session('warning')): ?>
+            Swal.fire({
+                icon: 'warning',
+                title: 'Atención',
+                text: '<?php echo e(session('warning')); ?>',
+                confirmButtonColor: '#6f7f5d',
+                customClass: { popup: 'rounded-4' }
+            });
+        <?php endif; ?>
+        <?php if(session('info')): ?>
+            Swal.fire({
+                icon: 'info',
+                title: 'Información',
+                text: '<?php echo e(session('info')); ?>',
+                confirmButtonColor: '#6f7f5d',
+                customClass: { popup: 'rounded-4' }
+            });
+        <?php endif; ?>
+    });
+    </script>
+
 </body>
 </html><?php /**PATH C:\Users\danna\OneDrive\Documentos\GitHub\PROYECTO-NUEVO\resources\views/layouts/guest.blade.php ENDPATH**/ ?>

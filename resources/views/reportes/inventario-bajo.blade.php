@@ -90,7 +90,23 @@
 
 </div>
 
-<div class="mt-4">
+<div class="mt-4 d-flex gap-2">
+
+    <a href="{{ route('reportes.inventario.pdf') }}"
+       class="btn btn-danger">
+
+        <i class="fas fa-file-pdf"></i>
+        PDF
+
+    </a>
+
+    <a href="{{ route('reportes.inventario.excel') }}"
+       class="btn btn-success">
+
+        <i class="fas fa-file-excel"></i>
+        Excel
+
+    </a>
 
     <a href="{{ route('dashboard') }}"
        class="btn btn-secondary">
