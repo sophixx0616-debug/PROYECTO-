@@ -8,6 +8,7 @@ class Specialist extends Model
 {
     protected $fillable = [
         'name',
-        'specialty'
+        'specialty',
+        'image'
     ];
 }

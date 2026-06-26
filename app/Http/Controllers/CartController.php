@@ -22,26 +22,29 @@ class CartController extends Controller
 
         // Verificamos si hay existencias
         if ($product->stock <= 0) {
-            return back()->with('error', '¡Lo sentimos! No hay stock de ' . $product->product_name);
+            return back()->with('error', '¡Lo sentimos! No hay stock de ' . $product->name);
         }
 
         $cart = session()->get('cart', []);
 
+        // Si ya está en el carrito, verificamos que no pida más de lo que hay
         if(isset($cart[$id])) {
             if($cart[$id]['quantity'] + 1 > $product->stock) {
                 return back()->with('error', 'No puedes añadir más; solo quedan ' . $product->stock . ' unidades.');
             }
             $cart[$id]['quantity']++;
         } else {
+            // Si es nuevo, lo guardamos con sus datos de inventario
             $cart[$id] = [
-                "name" => $product->product_name,
+                "name" => $product->name,
                 "quantity" => 1,
                 "price" => $product->price,
+                "image" => $product->image ?? 'default-product.png'
             ];
         }
 
         session()->put('cart', $cart);
-        return back()->with('success', $product->product_name . ' se añadió al carrito.');
+        return back()->with('success', $product->name . ' se añadió al carrito.');
     }
 
     // 3. Eliminar un item del carrito
@@ -54,15 +57,7 @@ class CartController extends Controller
         }
         return back()->with('success', 'Producto eliminado.');
     }
-
-    // 4. Finalizar pedido (vacía el carrito)
-    public function checkout()
-    {
-        session()->forget('cart');
-        return redirect()->route('cart.index')->with('success', '¡Pedido realizado con éxito! Te contactaremos pronto.');
-    }
-
-    // 5. Añadir un Servicio al carrito (Permite múltiples servicios diferentes)
+// 4. Añadir un Servicio al carrito (Funcionalidad extra)
     public function addService(Request $request, $id)
     {
         // Buscamos el servicio en tu tabla
@@ -70,21 +65,18 @@ class CartController extends Controller
 
         $cart = session()->get('cart', []);
 
-        // Usamos el ID del servicio como clave única en la bolsa
-        $cartKey = 'service_' . $id;
-
-        if(isset($cart[$cartKey])) {
-            // Si ya existe en la bolsa, aumentamos la cantidad elegida
-            $cart[$cartKey]['quantity']++;
-        } else {
-            // Si es la primera vez que se elige, lo registramos completo
-            $cart[$cartKey] = [
-                "name" => $service->name . " (Servicio)",
-                "quantity" => 1,
-                "price" => $service->price,
-                "image" => "service-icon" // Etiqueta para identificar que es un servicio
-            ];
+        // Si el servicio ya está en la bolsa, no lo duplicamos, solo avisamos
+        if(isset($cart['service_' . $id])) {
+            return back()->with('error', 'Este servicio ya está en tu agenda de la bolsa.');
         }
+
+        // Lo guardamos en la sesión con un identificador único para servicios
+        $cart['service_' . $id] = [
+            "name" => $service->name . " (Servicio)",
+            "quantity" => 1,
+            "price" => $service->price,
+            "image" => "service-icon" // Etiqueta para identificar que es un servicio
+        ];
 
         session()->put('cart', $cart);
         return back()->with('success', '¡' . $service->name . ' se añadió a tu bolsa de experiencias!');

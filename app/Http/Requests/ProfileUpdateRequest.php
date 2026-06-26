@@ -17,10 +17,8 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'     => ['required', 'string', 'max:255', 'regex:/^[\pL\s]+$/u'],
-            'last_name'=> ['nullable', 'string', 'max:255', 'regex:/^[\pL\s]+$/u'],
-            'phone'    => ['nullable', 'string', 'digits_between:7,15'],
-            'email'    => [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => [
                 'required',
                 'string',
                 'lowercase',
@@ -28,19 +26,6 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
-        ];
-    }
-
-    public function messages(): array
-    {
-        return [
-            'name.required'      => 'El nombre es obligatorio.',
-            'name.regex'         => 'El nombre solo puede contener letras y espacios.',
-            'last_name.regex'    => 'El apellido solo puede contener letras y espacios.',
-            'phone.digits_between' => 'El teléfono debe tener entre 7 y 15 dígitos.',
-            'email.required'     => 'El correo electrónico es obligatorio.',
-            'email.email'        => 'Ingrese un correo electrónico válido.',
-            'email.unique'       => 'Este correo ya está registrado.',
         ];
     }
 }
