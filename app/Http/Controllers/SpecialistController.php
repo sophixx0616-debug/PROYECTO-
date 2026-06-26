@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSpecialistRequest;
+use App\Http\Requests\UpdateSpecialistRequest;
 use App\Models\Specialist;
-use Illuminate\Http\Request;
 
 class SpecialistController extends Controller
 {
     public function index()
     {
         $specialists = Specialist::all();
-
         return view('specialists.index', compact('specialists'));
     }
 
@@ -19,20 +19,11 @@ class SpecialistController extends Controller
         return view('specialists.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreSpecialistRequest $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'specialty' => 'required'
-        ]);
+        Specialist::create($request->validated());
 
-        Specialist::create([
-            'name' => $request->name,
-            'specialty' => $request->specialty
-        ]);
-
-        return redirect()
-            ->route('specialists.index')
+        return redirect()->route('specialists.index')
             ->with('success', 'Especialista creada correctamente');
     }
 
@@ -46,20 +37,11 @@ class SpecialistController extends Controller
         return view('specialists.edit', compact('specialist'));
     }
 
-    public function update(Request $request, Specialist $specialist)
+    public function update(UpdateSpecialistRequest $request, Specialist $specialist)
     {
-        $request->validate([
-            'name' => 'required',
-            'specialty' => 'required'
-        ]);
+        $specialist->update($request->validated());
 
-        $specialist->update([
-            'name' => $request->name,
-            'specialty' => $request->specialty
-        ]);
-
-        return redirect()
-            ->route('specialists.index')
+        return redirect()->route('specialists.index')
             ->with('success', 'Especialista actualizada correctamente');
     }
 
@@ -67,8 +49,7 @@ class SpecialistController extends Controller
     {
         $specialist->delete();
 
-        return redirect()
-            ->route('specialists.index')
+        return redirect()->route('specialists.index')
             ->with('success', 'Especialista eliminada correctamente');
     }
 }

@@ -76,6 +76,16 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
                 <div class="card-body p-4">
 
+                    @if ($errors->any())
+                    <div class="alert alert-danger rounded-4">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+
                     <form action="{{ route('services.store') }}"
                           method="POST">
 
@@ -89,8 +99,15 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
                             <input type="text"
                                    name="name"
-                                   class="form-control form-control-lg"
-                                   required>
+                                   class="form-control form-control-lg @error('name') is-invalid @enderror"
+                                   value="{{ old('name') }}"
+                                   required
+                                   maxlength="255"
+                                   pattern=".*\S.*">
+
+                            @error('name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
 
                         </div>
 
@@ -102,7 +119,12 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
                             <textarea name="description"
                                       rows="4"
-                                      class="form-control"></textarea>
+                                      class="form-control form-control-lg @error('description') is-invalid @enderror"
+                                      required>{{ old('description') }}</textarea>
+
+                            @error('description')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
 
                         </div>
 
@@ -116,9 +138,15 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
                                 <input type="number"
                                        step="0.01"
+                                       min="0"
                                        name="price"
-                                       class="form-control form-control-lg"
+                                       class="form-control form-control-lg @error('price') is-invalid @enderror"
+                                       value="{{ old('price') }}"
                                        required>
+
+                                @error('price')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
 
                             </div>
 
@@ -130,9 +158,15 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
                                 <input type="number"
                                        name="duration"
-                                       value="60"
-                                       class="form-control form-control-lg"
+                                       min="1"
+                                       max="480"
+                                       value="{{ old('duration', '60') }}"
+                                       class="form-control form-control-lg @error('duration') is-invalid @enderror"
                                        required>
+
+                                @error('duration')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
 
                             </div>
 
@@ -145,17 +179,21 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                             </label>
 
                             <select name="status"
-                                    class="form-select form-select-lg">
+                                    class="form-select form-select-lg @error('status') is-invalid @enderror">
 
-                                <option value="1">
+                                <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>
                                     Activo
                                 </option>
 
-                                <option value="0">
+                                <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>
                                     Inactivo
                                 </option>
 
                             </select>
+
+                            @error('status')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
 
                         </div>
 

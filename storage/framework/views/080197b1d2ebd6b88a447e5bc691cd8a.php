@@ -1,3 +1,5 @@
+
+
 <?php $__env->startSection('content'); ?>
 
 <link rel="stylesheet"
@@ -5,7 +7,6 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
 <div class="container py-4">
 
-```
 <div class="d-flex justify-content-between align-items-center mb-5">
 
     <div>
@@ -40,7 +41,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
 </div>
 
-<?php if($items->where('quantity','<=',3)->count()): ?>
+<?php if($items->where('stock','<=',3)->count()): ?>
 
     <div class="alert alert-warning">
 
@@ -71,14 +72,17 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
              style="border-radius:25px;">
 
             <div class="text-center py-4"
-                 style="background:#fdf1f4;">
+                 style="background:#fdf1f4;height:180px;display:flex;align-items:center;justify-content:center;overflow:hidden;">
 
-                <i class="bi bi-box-seam"
-                   style="
-                        font-size:80px;
-                        color:#e7a6b6;
-                   ">
-                </i>
+                <?php if($item->image_url): ?>
+                    <img src="<?php echo e($item->image_url); ?>"
+                         alt="<?php echo e($item->product_name); ?>"
+                         style="height:100%;width:100%;object-fit:cover;">
+                <?php else: ?>
+                    <i class="bi bi-box-seam"
+                       style="font-size:80px;color:#e7a6b6;">
+                    </i>
+                <?php endif; ?>
 
             </div>
 
@@ -105,24 +109,24 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
                     <strong>Existencias:</strong>
 
-                    <?php if($item->quantity <= 3): ?>
+                    <?php if($item->stock <= 3): ?>
 
                         <span class="badge bg-danger">
-                            <?php echo e($item->quantity); ?>
+                            <?php echo e($item->stock); ?>
 
                         </span>
 
-                    <?php elseif($item->quantity <= 10): ?>
+                    <?php elseif($item->stock <= 10): ?>
 
                         <span class="badge bg-warning text-dark">
-                            <?php echo e($item->quantity); ?>
+                            <?php echo e($item->stock); ?>
 
                         </span>
 
                     <?php else: ?>
 
                         <span class="badge bg-success">
-                            <?php echo e($item->quantity); ?>
+                            <?php echo e($item->stock); ?>
 
                         </span>
 
@@ -130,7 +134,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
                 </p>
 
-                <?php if($item->quantity <= 3): ?>
+                <?php if($item->stock <= 3): ?>
 
                     <div class="alert alert-danger py-2">
 
@@ -162,7 +166,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
                     <button type="submit"
                             class="btn btn-danger"
-                            onclick="return confirm('¿Eliminar producto?')">
+                            onclick="event.preventDefault(); Swal.fire({icon:'warning',title:'¿Eliminar producto?',text:'Esta acción no se puede deshacer.',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí, eliminar',cancelButtonText:'Cancelar',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
 
                         <i class="bi bi-trash-fill"></i>
 
@@ -199,10 +203,9 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
     <?php endif; ?>
 
 </div>
-```
 
 </div>
 
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\xampp\PROYECTO--main\resources\views/inventory/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\danna\OneDrive\Documentos\GitHub\PROYECTO-NUEVO\resources\views/inventory/index.blade.php ENDPATH**/ ?>

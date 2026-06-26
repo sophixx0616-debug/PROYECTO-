@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreInventoryRequest;
+use App\Http\Requests\UpdateInventoryRequest;
 use App\Models\Inventory;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class InventoryController extends Controller
 {
     public function index()
     {
         $items = Inventory::all();
-
         $totalProductos = $items->count();
-
-        $stockBajo = $items->where('quantity', '<=', 5)->count();
-
-        $sinStock = $items->where('quantity', 0)->count();
+        $stockBajo = $items->where('stock', '<=', 5)->count();
+        $sinStock = $items->where('stock', 0)->count();
 
         return view('inventory.index', compact(
             'items',
@@ -30,48 +29,41 @@ class InventoryController extends Controller
         return view('inventory.create');
     }
 
-    public function store(Request $request)
-{
-    $request->validate([
-        'product_name' => 'required',
-        'stock' => 'required|numeric',
-        'price' => 'required|numeric',
-    ]);
+    public function store(StoreInventoryRequest $request)
+    {
+        $data = $request->validated();
 
-    Inventory::create([
-        'product_name' => $request->product_name,
-        'brand' => $request->brand,
-        'stock' => $request->stock,
-        'category' => $request->category,
-        'description' => $request->description,
-        'price' => $request->price,
-    ]);
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('inventory', 'public');
+        }
 
-    return redirect()->route('inventory.index')
-        ->with('success', 'Producto agregado correctamente');
-}
+        Inventory::create($data);
+
+        return redirect()->route('inventory.index')
+            ->with('success', 'Producto agregado correctamente');
+    }
+
     public function edit($id)
     {
         $item = Inventory::findOrFail($id);
-
         return view('inventory.edit', compact('item'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateInventoryRequest $request, $id)
     {
-        $request->validate([
-            'name' => 'required',
-            'quantity' => 'required|numeric',
-            'price' => 'required|numeric',
-        ]);
-
         $item = Inventory::findOrFail($id);
+        $data = $request->validated();
 
-        $item->update([
-            'name' => $request->name,
-            'quantity' => $request->quantity,
-            'price' => $request->price,
-        ]);
+        if ($request->hasFile('image')) {
+            if ($item->image && Storage::disk('public')->exists($item->image)) {
+                Storage::disk('public')->delete($item->image);
+            }
+            $data['image'] = $request->file('image')->store('inventory', 'public');
+        } else {
+            unset($data['image']);
+        }
+
+        $item->update($data);
 
         return redirect()->route('inventory.index')
             ->with('success', 'Producto actualizado correctamente');
@@ -80,6 +72,10 @@ class InventoryController extends Controller
     public function destroy($id)
     {
         $item = Inventory::findOrFail($id);
+
+        if ($item->image && Storage::disk('public')->exists($item->image)) {
+            Storage::disk('public')->delete($item->image);
+        }
 
         $item->delete();
 

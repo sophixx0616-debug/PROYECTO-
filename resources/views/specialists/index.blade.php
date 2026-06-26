@@ -77,7 +77,9 @@
                                 @csrf
                                 @method('DELETE')
 
-                                <button class="btn btn-danger btn-sm">
+                                <button type="button"
+                                        class="btn btn-danger btn-sm"
+                                        onclick="Swal.fire({icon:'warning',title:'¿Eliminar especialista?',text:'Esta acción no se puede deshacer.',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí, eliminar',cancelButtonText:'Cancelar',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
 
                                     <i class="fas fa-trash-can"></i>
 

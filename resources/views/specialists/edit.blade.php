@@ -1,4 +1,3 @@
-// prueba github
 @extends('layouts.app')
 
 @section('content')
@@ -21,6 +20,16 @@
 
         <div class="card-body p-4">
 
+            @if ($errors->any())
+            <div class="alert alert-danger rounded-4">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
             <form action="{{ route('specialists.update',$specialist->id) }}"
                   method="POST">
 
@@ -38,9 +47,17 @@
 
                     <input type="text"
                            name="name"
-                           value="{{ $specialist->name }}"
-                           class="form-control form-control-lg"
-                           required>
+                           value="{{ old('name', $specialist->name) }}"
+                           class="form-control form-control-lg @error('name') is-invalid @enderror"
+                           required
+                           maxlength="255"
+                           pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
+                           title="Solo letras y espacios"
+                           oninput="this.value=this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g,'')">
+
+                    @error('name')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
 
                 </div>
 
@@ -55,9 +72,14 @@
 
                     <input type="text"
                            name="specialty"
-                           value="{{ $specialist->specialty }}"
-                           class="form-control form-control-lg"
-                           required>
+                           value="{{ old('specialty', $specialist->specialty) }}"
+                           class="form-control form-control-lg @error('specialty') is-invalid @enderror"
+                           required
+                           maxlength="255">
+
+                    @error('specialty')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
 
                 </div>
 

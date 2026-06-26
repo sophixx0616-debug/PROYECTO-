@@ -54,13 +54,13 @@
                 <div class="card-body p-5">
 
                     
-                    <?php if(session('cart') && count(session('cart')) > 0): ?>
+                    <?php if($cart && count($cart) > 0): ?>
                         
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
                                 <thead class="text-muted small text-uppercase border-bottom">
                                     <tr>
-                                        <th>Insumo / Producto</th>
+                                        <th>Insumo / Servicio</th>
                                         <th class="text-center">Cantidad</th>
                                         <th class="text-end">Precio Unitario</th>
                                         <th class="text-end">Subtotal</th>
@@ -69,13 +69,17 @@
                                 </thead>
                                 <tbody>
                                     <?php $total = 0 ?>
-                                    <?php $__currentLoopData = session('cart'); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $details): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php $__currentLoopData = $cart; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $details): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <?php $total += $details['price'] * $details['quantity'] ?>
                                         <tr>
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     <div class="rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="background-color: #fdf1f4; width: 40px; height: 40px;">
-                                                        <i class="bi bi-flower1" style="color: #e7a6b6;"></i>
+                                                        <?php if(str_starts_with($id, 'service_')): ?>
+                                                            <i class="bi bi-gem" style="color: #e7a6b6;"></i>
+                                                        <?php else: ?>
+                                                            <i class="bi bi-flower1" style="color: #e7a6b6;"></i>
+                                                        <?php endif; ?>
                                                     </div>
                                                     <div>
                                                         <span class="fw-bold text-secondary d-block"><?php echo e($details['name']); ?></span>
@@ -97,11 +101,10 @@
 
                                             </td>
                                             <td class="text-end">
-                                                
                                                 <form action="<?php echo e(route('cart.remove', $id)); ?>" method="POST" style="display:inline-block;">
                                                     <?php echo csrf_field(); ?> 
                                                     <?php echo method_field('DELETE'); ?>
-                                                    <button type="submit" class="btn btn-sm text-danger opacity-70 hover:opacity-100" onclick="return confirm('¿Quitar del carrito?')">
+                                                    <button type="submit" class="btn btn-sm text-danger opacity-70 hover:opacity-100" onclick="return confirm('¿Quitar de la bolsa?')">
                                                         <i class="bi bi-trash3-fill fs-5"></i>
                                                     </button>
                                                 </form>
@@ -122,9 +125,12 @@
                                 <a href="<?php echo e(route('services.index')); ?>" class="btn btn-outline-secondary rounded-pill px-4 align-self-center text-decoration-none">
                                     <i class="bi bi-arrow-left me-1"></i> Seguir Viendo
                                 </a>
-                                <button class="btn btn-confirmar shadow-sm fw-bold">
-                                    <i class="bi bi-credit-card-2-back-fill me-2"></i> Finalizar Pedido
-                                </button>
+                                <form action="<?php echo e(route('cart.checkout')); ?>" method="POST" style="display:inline;">
+                                    <?php echo csrf_field(); ?>
+                                    <button type="submit" class="btn btn-confirmar shadow-sm fw-bold" onclick="return confirm('¿Finalizar pedido? Los productos y servicios seleccionados serán procesados.')">
+                                        <i class="bi bi-credit-card-2-back-fill me-2"></i> Finalizar Pedido
+                                    </button>
+                                </form>
                             </div>
                         </div>
 
@@ -150,4 +156,4 @@
 </div>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\xampp\PROYECTO--main\resources\views/cart/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\danna\OneDrive\Documentos\GitHub\PROYECTO-NUEVO\resources\views/cart/index.blade.php ENDPATH**/ ?>

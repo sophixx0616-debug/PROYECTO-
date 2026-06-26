@@ -167,7 +167,7 @@
 
                                 <button type="submit" 
                                         class="btn btn-sm btn-outline-danger rounded-pill px-3" 
-                                        onclick="return confirm('¿Eliminar servicio?')">
+                                        onclick="event.preventDefault(); Swal.fire({icon:'warning',title:'¿Eliminar servicio?',text:'Esta acción no se puede deshacer.',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí, eliminar',cancelButtonText:'Cancelar',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
                                     <i class="bi bi-trash3-fill"></i>
                                 </button>
 
@@ -180,12 +180,13 @@
                         <div class="d-grid mt-auto pt-3 border-top border-light">
 
                             <form action="{{ route('cart.addService', $service->id) }}" method="POST" 
-                                  onsubmit="return confirm('¿Quieres agregar este servicio «{{ $service->name }}» al carrito?')">
+                                   class="d-inline">
                                 
                                 @csrf
                                 
                                 <button type="submit" class="btn text-white w-100 rounded-pill shadow-sm py-2 fw-bold" 
-                                        style="background-color: #e7a6b6; transition: 0.3s;">
+                                        style="background-color: #e7a6b6; transition: 0.3s;"
+                                        onclick="event.preventDefault(); Swal.fire({icon:'question',title:'Agregar servicio',text:'¿Deseas agregar este servicio a tu bolsa?',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí, agregar',cancelButtonText:'Cancelar',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
                                     <i class="bi bi-bag-plus-fill me-2"></i> Reservar Servicio
                                 </button>
 

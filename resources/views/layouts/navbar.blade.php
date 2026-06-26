@@ -95,6 +95,17 @@
     </a>
 </li>
 
+<li class="nav-item position-relative">
+    <a class="nav-link" href="{{ route('cart.index') }}">
+        <i class="fas fa-shopping-bag"></i> Bolsa
+        @if(session('cart') && count(session('cart')) > 0)
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.6rem;">
+                {{ count(session('cart')) }}
+            </span>
+        @endif
+    </a>
+</li>
+
                     {{-- Opciones exclusivas del administrador --}}
                     @if(Auth::user()->role && Auth::user()->role->name === 'admin')
 <li class="nav-item">
@@ -121,9 +132,9 @@
                     @endif
 
                     <li class="nav-item">
-    <form method="POST" action="{{ route('logout') }}">
+    <form method="POST" action="{{ route('logout') }}" id="logout-form">
         @csrf
-        <button type="submit" class="btn-logout nav-link">
+        <button type="button" class="btn-logout nav-link" onclick="confirmLogout()">
             <i class="fas fa-sign-out-alt"></i> Salir
         </button>
     </form>

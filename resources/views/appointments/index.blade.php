@@ -7,7 +7,6 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
 <div class="container py-4">
 
-```
 <h1 class="text-center fw-bold mb-5"
     style="color:#6f7f5d;font-size:50px;">
     <i class="bi bi-calendar-heart"></i>
@@ -78,6 +77,32 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                             {{ $a->status }}
                         </span>
 
+                        @if($a->status !== 'cancelada' && (!auth()->user()->role || auth()->user()->role->name !== 'admin'))
+
+                        <div class="mt-3 d-flex gap-2">
+
+                            <form action="{{ route('appointments.cancel', $a->id) }}"
+                                  method="POST"
+                                  class="d-inline">
+
+                                @csrf
+                                @method('PATCH')
+
+                                <button type="button"
+                                        class="btn btn-outline-danger"
+                                        onclick="Swal.fire({icon:'warning',title:'¿Cancelar cita?',text:'Esta acción no se puede deshacer.',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí, cancelar',cancelButtonText:'Volver',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
+
+                                    <i class="bi bi-x-circle"></i>
+                                    Cancelar
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                        @endif
+
                         @if(auth()->user()->role && auth()->user()->role->name === 'admin')
 
                         <div class="mt-3 d-flex gap-2">
@@ -92,13 +117,14 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
                             <form action="{{ route('appointments.destroy', $a->id) }}"
                                   method="POST"
-                                  onsubmit="return confirm('¿Deseas eliminar esta cita?')">
+                                  class="d-inline">
 
                                 @csrf
                                 @method('DELETE')
 
-                                <button type="submit"
-                                        class="btn btn-danger">
+                                <button type="button"
+                                        class="btn btn-danger"
+                                        onclick="Swal.fire({icon:'warning',title:'¿Eliminar cita?',text:'Esta acción no se puede deshacer.',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí, eliminar',cancelButtonText:'Cancelar',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
 
                                     <i class="bi bi-trash"></i>
                                     Eliminar
@@ -189,7 +215,6 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
     </div>
 
 </div>
-```
 
 </div>
 

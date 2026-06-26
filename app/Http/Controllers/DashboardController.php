@@ -84,8 +84,8 @@ public function especialistasMasSolicitadas()
 }
 public function inventarioBajo()
 {
-    $productos = \App\Models\Inventory::where('quantity', '<=', 5)
-        ->orderBy('quantity')
+    $productos = \App\Models\Inventory::where('stock', '<=', 5)
+        ->orderBy('stock')
         ->get();
 
     return view(

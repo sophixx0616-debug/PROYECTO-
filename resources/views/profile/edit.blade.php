@@ -80,6 +80,16 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
 <div class="profile-card">
 
+    @if ($errors->any())
+    <div class="alert alert-danger rounded-4">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     <form method="POST"
           action="{{ route('profile.update') }}">
 
@@ -104,8 +114,14 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                 <input type="text"
                        name="name"
                        value="{{ old('name', $user->name) }}"
-                       class="form-control"
-                       required>
+                       class="form-control @error('name') is-invalid @enderror"
+                       required
+                       maxlength="255"
+                       pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
+                       title="Solo letras y espacios"
+                       oninput="this.value=this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g,'')">
+
+                @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
 
             </div>
 
@@ -118,7 +134,13 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                 <input type="text"
                        name="last_name"
                        value="{{ old('last_name', $user->last_name) }}"
-                       class="form-control">
+                       class="form-control @error('last_name') is-invalid @enderror"
+                       maxlength="255"
+                       pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]+"
+                       title="Solo letras y espacios"
+                       oninput="this.value=this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ\s]/g,'')">
+
+                @error('last_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
 
             </div>
 
@@ -135,8 +157,10 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                 <input type="email"
                        name="email"
                        value="{{ old('email', $user->email) }}"
-                       class="form-control"
+                       class="form-control @error('email') is-invalid @enderror"
                        required>
+
+                @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
 
             </div>
 
@@ -146,10 +170,16 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                     Teléfono
                 </label>
 
-                <input type="text"
+                <input type="tel"
                        name="phone"
                        value="{{ old('phone', $user->phone) }}"
-                       class="form-control">
+                       class="form-control @error('phone') is-invalid @enderror"
+                       pattern="[0-9]{7,15}"
+                       maxlength="15"
+                       title="Solo números, entre 7 y 15 dígitos"
+                       oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+
+                @error('phone') <div class="invalid-feedback">{{ $message }}</div> @enderror
 
             </div>
 
@@ -172,7 +202,10 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
             <input type="password"
                    name="password"
-                   class="form-control">
+                   class="form-control @error('password') is-invalid @enderror"
+                   minlength="8">
+
+            @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
 
         </div>
 
@@ -184,7 +217,8 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
             <input type="password"
                    name="password_confirmation"
-                   class="form-control">
+                   class="form-control"
+                   minlength="8">
 
         </div>
 
@@ -199,7 +233,6 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
     </form>
 
 </div>
-```
 
 </div>
 

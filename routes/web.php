@@ -66,6 +66,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/appointments/calendar', [AppointmentController::class, 'calendar'])
         ->name('appointments.calendar');
+
+    Route::patch('/appointments/{appointment}/cancel', [AppointmentController::class, 'cancel'])
+        ->name('appointments.cancel');
 });
 
 // Carrito
@@ -82,6 +85,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/carrito/anadir-servicio/{id}', [CartController::class, 'addService'])
         ->name('cart.addService');
+
+    Route::post('/carrito/finalizar', [CartController::class, 'checkout'])
+        ->name('cart.checkout');
 });
 
 // Reportes

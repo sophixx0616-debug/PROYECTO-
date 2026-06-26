@@ -22,29 +22,26 @@ class CartController extends Controller
 
         // Verificamos si hay existencias
         if ($product->stock <= 0) {
-            return back()->with('error', '¡Lo sentimos! No hay stock de ' . $product->name);
+            return back()->with('error', '¡Lo sentimos! No hay stock de ' . $product->product_name);
         }
 
         $cart = session()->get('cart', []);
 
-        // Si ya está en el carrito, verificamos que no pida más de lo que hay
         if(isset($cart[$id])) {
             if($cart[$id]['quantity'] + 1 > $product->stock) {
                 return back()->with('error', 'No puedes añadir más; solo quedan ' . $product->stock . ' unidades.');
             }
             $cart[$id]['quantity']++;
         } else {
-            // Si es nuevo, lo guardamos con sus datos de inventario
             $cart[$id] = [
-                "name" => $product->name,
+                "name" => $product->product_name,
                 "quantity" => 1,
                 "price" => $product->price,
-                "image" => $product->image ?? 'default-product.png'
             ];
         }
 
         session()->put('cart', $cart);
-        return back()->with('success', $product->name . ' se añadió al carrito.');
+        return back()->with('success', $product->product_name . ' se añadió al carrito.');
     }
 
     // 3. Eliminar un item del carrito
@@ -58,7 +55,14 @@ class CartController extends Controller
         return back()->with('success', 'Producto eliminado.');
     }
 
-    // 4. Añadir un Servicio al carrito (Permite múltiples servicios diferentes)
+    // 4. Finalizar pedido (vacía el carrito)
+    public function checkout()
+    {
+        session()->forget('cart');
+        return redirect()->route('cart.index')->with('success', '¡Pedido realizado con éxito! Te contactaremos pronto.');
+    }
+
+    // 5. Añadir un Servicio al carrito (Permite múltiples servicios diferentes)
     public function addService(Request $request, $id)
     {
         // Buscamos el servicio en tu tabla

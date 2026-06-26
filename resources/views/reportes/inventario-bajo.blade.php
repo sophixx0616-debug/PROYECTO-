@@ -52,9 +52,9 @@
 
                     <td>{{ $producto->id }}</td>
 
-                    <td>{{ $producto->name }}</td>
+                    <td>{{ $producto->product_name }}</td>
 
-                    <td>{{ $producto->quantity }}</td>
+                    <td>{{ $producto->stock }}</td>
 
                     <td>
 

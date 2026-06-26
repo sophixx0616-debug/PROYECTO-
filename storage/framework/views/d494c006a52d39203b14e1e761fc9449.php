@@ -129,4 +129,4 @@ body{
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
-</html><?php /**PATH C:\xampp\htdocs\xampp\PROYECTO--main\resources\views/layouts/guest.blade.php ENDPATH**/ ?>
+</html><?php /**PATH C:\Users\danna\OneDrive\Documentos\GitHub\PROYECTO-NUEVO\resources\views/layouts/guest.blade.php ENDPATH**/ ?>

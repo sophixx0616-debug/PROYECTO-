@@ -825,4 +825,4 @@ Te asesoramos para lograr el diseño perfecto.
 </div>
 </body>
 </html>
-<?php /**PATH C:\xampp\htdocs\xampp\PROYECTO--main\resources\views/welcome.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\danna\OneDrive\Documentos\GitHub\PROYECTO-NUEVO\resources\views/welcome.blade.php ENDPATH**/ ?>

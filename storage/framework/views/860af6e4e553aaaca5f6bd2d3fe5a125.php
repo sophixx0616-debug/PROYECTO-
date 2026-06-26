@@ -1,3 +1,5 @@
+
+
 <?php $__env->startSection('content'); ?>
 
 <link rel="stylesheet"
@@ -5,7 +7,6 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
 <div class="container py-4">
 
-```
 <h1 class="text-center fw-bold mb-5"
     style="color:#6f7f5d;font-size:50px;">
     <i class="bi bi-calendar-heart"></i>
@@ -82,6 +83,31 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                             <?php echo e($a->status); ?>
 
                         </span>
+
+                        <?php if($a->status !== 'cancelada' && (!auth()->user()->role || auth()->user()->role->name !== 'admin')): ?>
+
+                        <div class="mt-3 d-flex gap-2">
+
+                            <form action="<?php echo e(route('appointments.cancel', $a->id)); ?>"
+                                  method="POST"
+                                  onsubmit="return confirm('¿Deseas cancelar esta cita?')">
+
+                                <?php echo csrf_field(); ?>
+                                <?php echo method_field('PATCH'); ?>
+
+                                <button type="submit"
+                                        class="btn btn-outline-danger">
+
+                                    <i class="bi bi-x-circle"></i>
+                                    Cancelar
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                        <?php endif; ?>
 
                         <?php if(auth()->user()->role && auth()->user()->role->name === 'admin'): ?>
 
@@ -194,10 +220,9 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
     </div>
 
 </div>
-```
 
 </div>
 
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\xampp\PROYECTO--main\resources\views/appointments/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\danna\OneDrive\Documentos\GitHub\PROYECTO-NUEVO\resources\views/appointments/index.blade.php ENDPATH**/ ?>

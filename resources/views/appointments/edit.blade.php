@@ -4,7 +4,6 @@
 
 <div class="container py-5">
 
-```
 <h1 class="text-center fw-bold mb-5"
     style="color:#6f7f5d;">
 
@@ -103,6 +102,38 @@
 
             </div>
 
+            @if(auth()->user()->role && auth()->user()->role->name === 'admin')
+
+            <div class="mb-4">
+
+                <label class="form-label fw-bold">
+                    Estado
+                </label>
+
+                <select name="status"
+                        class="form-select">
+
+                    <option value="pendiente"
+                    {{ $appointment->status == 'pendiente' ? 'selected' : '' }}>
+                        Pendiente
+                    </option>
+
+                    <option value="confirmada"
+                    {{ $appointment->status == 'confirmada' ? 'selected' : '' }}>
+                        Confirmada
+                    </option>
+
+                    <option value="cancelada"
+                    {{ $appointment->status == 'cancelada' ? 'selected' : '' }}>
+                        Cancelada
+                    </option>
+
+                </select>
+
+            </div>
+
+            @endif
+
             <button type="submit"
                     class="btn text-white"
                     style="background:#8fae73;">
@@ -124,7 +155,6 @@
     </div>
 
 </div>
-```
 
 </div>
 

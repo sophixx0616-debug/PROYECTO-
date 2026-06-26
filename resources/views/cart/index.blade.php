@@ -54,7 +54,7 @@
                 <div class="card-body p-5">
 
                     {{-- CASO A: El carrito SI tiene productos o servicios --}}
-                    @if(session('cart') && count(session('cart')) > 0)
+                    @if($cart && count($cart) > 0)
                         
                         <div class="table-responsive">
                             <table class="table table-hover align-middle">
@@ -69,14 +69,13 @@
                                 </thead>
                                 <tbody>
                                     @php $total = 0 @endphp
-                                    @foreach(session('cart') as $id => $details)
+                                    @foreach($cart as $id => $details)
                                         @php $total += $details['price'] * $details['quantity'] @endphp
                                         <tr>
                                             <td>
                                                 <div class="d-flex align-items-center">
                                                     <div class="rounded-circle p-2 me-3 d-flex align-items-center justify-content-center" style="background-color: #fdf1f4; width: 40px; height: 40px;">
-                                                        {{-- Icono inteligente --}}
-                                                        @if(isset($details['image']) && $details['image'] === 'service-icon')
+                                                        @if(str_starts_with($id, 'service_'))
                                                             <i class="bi bi-gem" style="color: #e7a6b6;"></i>
                                                         @else
                                                             <i class="bi bi-flower1" style="color: #e7a6b6;"></i>
@@ -102,7 +101,7 @@
                                                 <form action="{{ route('cart.remove', $id) }}" method="POST" style="display:inline-block;">
                                                     @csrf 
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm text-danger opacity-70 hover:opacity-100" onclick="return confirm('¿Quitar de la bolsa?')">
+                                                    <button type="button" class="btn btn-sm text-danger opacity-70 hover:opacity-100" onclick="Swal.fire({icon:'warning',title:'¿Quitar de la bolsa?',text:'Este producto será eliminado de tu bolsa.',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí, quitar',cancelButtonText:'Cancelar',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
                                                         <i class="bi bi-trash3-fill fs-5"></i>
                                                     </button>
                                                 </form>
@@ -123,9 +122,12 @@
                                 <a href="{{ route('services.index') }}" class="btn btn-outline-secondary rounded-pill px-4 align-self-center text-decoration-none">
                                     <i class="bi bi-arrow-left me-1"></i> Seguir Viendo
                                 </a>
-                                <button class="btn btn-confirmar shadow-sm fw-bold">
-                                    <i class="bi bi-credit-card-2-back-fill me-2"></i> Finalizar Pedido
-                                </button>
+                                <form action="{{ route('cart.checkout') }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <button type="button" class="btn btn-confirmar shadow-sm fw-bold" onclick="Swal.fire({icon:'question',title:'¿Finalizar pedido?',text:'Los productos y servicios seleccionados serán procesados.',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí, finalizar',cancelButtonText:'Cancelar',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
+                                        <i class="bi bi-credit-card-2-back-fill me-2"></i> Finalizar Pedido
+                                    </button>
+                                </form>
                             </div>
                         </div>
 

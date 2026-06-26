@@ -19,10 +19,22 @@
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         body{
             background:#fdf8f8;
             min-height:100vh;
+        }
+        .is-invalid{
+            border-color:#dc3545 !important;
+            box-shadow:0 0 0 0.2rem rgba(220,53,69,.25) !important;
+        }
+        .invalid-feedback{
+            color:#dc3545;
+            font-size:0.875em;
+            margin-top:0.25rem;
         }
     </style>
 
@@ -37,6 +49,69 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: '¡Éxito!',
+                text: '{{ session('success') }}',
+                confirmButtonColor: '#6f7f5d',
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: { popup: 'rounded-4' }
+            });
+        @endif
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '{{ session('error') }}',
+                confirmButtonColor: '#6f7f5d',
+                timer: 3000,
+                timerProgressBar: true,
+                customClass: { popup: 'rounded-4' }
+            });
+        @endif
+        @if(session('warning'))
+            Swal.fire({
+                icon: 'warning',
+                title: 'Atención',
+                text: '{{ session('warning') }}',
+                confirmButtonColor: '#6f7f5d',
+                customClass: { popup: 'rounded-4' }
+            });
+        @endif
+        @if(session('info'))
+            Swal.fire({
+                icon: 'info',
+                title: 'Información',
+                text: '{{ session('info') }}',
+                confirmButtonColor: '#6f7f5d',
+                customClass: { popup: 'rounded-4' }
+            });
+        @endif
+    });
+
+    function confirmLogout() {
+        Swal.fire({
+            icon: 'question',
+            title: '¿Cerrar sesión?',
+            text: 'Estás a punto de salir del sistema.',
+            showCancelButton: true,
+            confirmButtonColor: '#6f7f5d',
+            cancelButtonColor: '#dc3545',
+            confirmButtonText: 'Sí, salir',
+            cancelButtonText: 'Cancelar',
+            customClass: { popup: 'rounded-4' }
+        }).then((r) => {
+            if (r.isConfirmed) {
+                document.getElementById('logout-form').submit();
+            }
+        });
+    }
+    </script>
 
 </body>
 </html>

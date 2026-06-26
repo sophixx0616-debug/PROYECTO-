@@ -17,6 +17,10 @@ class DatabaseSeeder extends Seeder
 {
 $this->call(RoleSeeder::class);
 
+$this->call(ServiceSeeder::class);
+$this->call(SpecialistSeeder::class);
+$this->call(InventorySeeder::class);
+
 User::create([
     'name' => 'Admin',
     'last_name' => 'Principal',

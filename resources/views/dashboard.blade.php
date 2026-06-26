@@ -371,6 +371,70 @@ body{
 
 </div>
 
+<!-- REPORTES -->
+<div class="appointments-card mt-4">
+
+    <h4 class="section-title">
+        <i class="bi bi-file-earmark-bar-graph-fill"></i>
+        Reportes
+    </h4>
+
+    <div class="row g-3">
+
+        <div class="col-md-4">
+            <a href="{{ route('reportes.citas') }}"
+               class="btn quick-btn w-100">
+
+                <i class="bi bi-calendar-check"></i>
+                Últimas Citas
+
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{{ route('reportes.servicios') }}"
+               class="btn quick-btn w-100">
+
+                <i class="bi bi-stars"></i>
+                Servicios Más Solicitados
+
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{{ route('reportes.especialistas') }}"
+               class="btn quick-btn w-100">
+
+                <i class="bi bi-person-heart"></i>
+                Especialistas Más Solicitadas
+
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{{ route('reportes.inventario') }}"
+               class="btn quick-btn w-100">
+
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                Inventario Bajo
+
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{{ route('reportes.ingresos') }}"
+               class="btn quick-btn w-100">
+
+                <i class="bi bi-cash-stack"></i>
+                Ingresos Estimados
+
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
 <!-- ULTIMAS CITAS -->
 <div class="appointments-card mt-4">
 
@@ -440,44 +504,12 @@ body{
     </div>
 
     <div class="text-end mt-3">
-
         <a href="{{ route('reportes.citas') }}"
            class="btn btn-success">
-
             <i class="bi bi-file-earmark-text"></i>
             Ver reporte detallado
-
         </a>
-<a href="{{ route('reportes.servicios') }}"
-   class="btn btn-primary">
-
-    <i class="bi bi-stars"></i>
-    Servicios Más Solicitados
-
-</a>
-<a href="{{ route('reportes.especialistas') }}"
-   class="btn btn-warning">
-
-    <i class="bi bi-person-heart"></i>
-    Especialistas Más Solicitadas
-
-</a>
-<a href="{{ route('reportes.inventario') }}"
-   class="btn btn-danger">
-
-    <i class="bi bi-exclamation-triangle-fill"></i>
-    Inventario Bajo
-
-</a>
-<a href="{{ route('reportes.ingresos') }}"
-   class="btn btn-success">
-
-    <i class="bi bi-cash-stack"></i>
-    Ingresos Estimados
-
-</a>
     </div>
-    
 
     @else
 
@@ -598,6 +630,38 @@ body{
                    class="btn quick-btn">
 
                     Ver Catálogo
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- BOLSA -->
+    <div class="col-md-4">
+
+        <div class="card dashboard-card text-center h-100">
+
+            <div class="card-body p-4">
+
+                <i class="bi bi-bag-heart-fill"
+                   style="font-size:70px;color:#e7a6b6;">
+                </i>
+
+                <h3 class="mt-3">
+                    Mi Bolsa
+                </h3>
+
+                <p>
+                    Revisa tus productos y servicios.
+                </p>
+
+                <a href="{{ route('cart.index') }}"
+                   class="btn quick-btn">
+
+                    <i class="bi bi-bag-check"></i> Ver Bolsa
 
                 </a>
 

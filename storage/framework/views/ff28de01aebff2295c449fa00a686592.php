@@ -95,6 +95,18 @@
     </a>
 </li>
 
+<li class="nav-item position-relative">
+    <a class="nav-link" href="<?php echo e(route('cart.index')); ?>">
+        <i class="fas fa-shopping-bag"></i> Bolsa
+        <?php if(session('cart') && count(session('cart')) > 0): ?>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.6rem;">
+                <?php echo e(count(session('cart'))); ?>
+
+            </span>
+        <?php endif; ?>
+    </a>
+</li>
+
                     
                     <?php if(Auth::user()->role && Auth::user()->role->name === 'admin'): ?>
 <li class="nav-item">
@@ -121,9 +133,9 @@
                     <?php endif; ?>
 
                     <li class="nav-item">
-    <form method="POST" action="<?php echo e(route('logout')); ?>">
+    <form method="POST" action="<?php echo e(route('logout')); ?>" id="logout-form">
         <?php echo csrf_field(); ?>
-        <button type="submit" class="btn-logout nav-link">
+        <button type="button" class="btn-logout nav-link" onclick="confirmLogout()">
             <i class="fas fa-sign-out-alt"></i> Salir
         </button>
     </form>
@@ -150,4 +162,4 @@
         </div>
 
     </div>
-</nav><?php /**PATH C:\xampp\htdocs\xampp\PROYECTO--main\resources\views/layouts/navbar.blade.php ENDPATH**/ ?>
+</nav><?php /**PATH C:\Users\danna\OneDrive\Documentos\GitHub\PROYECTO-NUEVO\resources\views/layouts/navbar.blade.php ENDPATH**/ ?>

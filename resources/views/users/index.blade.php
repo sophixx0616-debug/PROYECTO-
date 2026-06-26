@@ -127,7 +127,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
                                 <button type="submit"
                                         class="btn btn-danger btn-sm"
-                                        onclick="return confirm('¿Eliminar este usuario?')">
+                                        onclick="event.preventDefault(); Swal.fire({icon:'warning',title:'¿Eliminar usuario?',text:'Esta acción no se puede deshacer.',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí, eliminar',cancelButtonText:'Cancelar',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
 
                                     <i class="bi bi-trash-fill"></i>
 

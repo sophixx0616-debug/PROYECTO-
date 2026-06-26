@@ -4,7 +4,6 @@
 
 <div class="container py-5">
 
-```
 <h1 class="text-center fw-bold mb-5"
     style="color:#6f7f5d;">
 
@@ -132,8 +131,6 @@
     </a>
 
 </div>
-```
-
 </div>
 
 @endsection

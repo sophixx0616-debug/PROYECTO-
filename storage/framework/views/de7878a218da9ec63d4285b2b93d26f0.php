@@ -1,3 +1,5 @@
+
+
 <?php $__env->startSection('content'); ?>
 
 <style>
@@ -374,6 +376,70 @@ body{
 
 </div>
 
+<!-- REPORTES -->
+<div class="appointments-card mt-4">
+
+    <h4 class="section-title">
+        <i class="bi bi-file-earmark-bar-graph-fill"></i>
+        Reportes
+    </h4>
+
+    <div class="row g-3">
+
+        <div class="col-md-4">
+            <a href="<?php echo e(route('reportes.citas')); ?>"
+               class="btn quick-btn w-100">
+
+                <i class="bi bi-calendar-check"></i>
+                Últimas Citas
+
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="<?php echo e(route('reportes.servicios')); ?>"
+               class="btn quick-btn w-100">
+
+                <i class="bi bi-stars"></i>
+                Servicios Más Solicitados
+
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="<?php echo e(route('reportes.especialistas')); ?>"
+               class="btn quick-btn w-100">
+
+                <i class="bi bi-person-heart"></i>
+                Especialistas Más Solicitadas
+
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="<?php echo e(route('reportes.inventario')); ?>"
+               class="btn quick-btn w-100">
+
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                Inventario Bajo
+
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="<?php echo e(route('reportes.ingresos')); ?>"
+               class="btn quick-btn w-100">
+
+                <i class="bi bi-cash-stack"></i>
+                Ingresos Estimados
+
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
 <!-- ULTIMAS CITAS -->
 <div class="appointments-card mt-4">
 
@@ -443,44 +509,12 @@ body{
     </div>
 
     <div class="text-end mt-3">
-
         <a href="<?php echo e(route('reportes.citas')); ?>"
            class="btn btn-success">
-
             <i class="bi bi-file-earmark-text"></i>
             Ver reporte detallado
-
         </a>
-<a href="<?php echo e(route('reportes.servicios')); ?>"
-   class="btn btn-primary">
-
-    <i class="bi bi-stars"></i>
-    Servicios Más Solicitados
-
-</a>
-<a href="<?php echo e(route('reportes.especialistas')); ?>"
-   class="btn btn-warning">
-
-    <i class="bi bi-person-heart"></i>
-    Especialistas Más Solicitadas
-
-</a>
-<a href="<?php echo e(route('reportes.inventario')); ?>"
-   class="btn btn-danger">
-
-    <i class="bi bi-exclamation-triangle-fill"></i>
-    Inventario Bajo
-
-</a>
-<a href="<?php echo e(route('reportes.ingresos')); ?>"
-   class="btn btn-success">
-
-    <i class="bi bi-cash-stack"></i>
-    Ingresos Estimados
-
-</a>
     </div>
-    
 
     <?php else: ?>
 
@@ -610,6 +644,38 @@ body{
 
     </div>
 
+    <!-- BOLSA -->
+    <div class="col-md-4">
+
+        <div class="card dashboard-card text-center h-100">
+
+            <div class="card-body p-4">
+
+                <i class="bi bi-bag-heart-fill"
+                   style="font-size:70px;color:#e7a6b6;">
+                </i>
+
+                <h3 class="mt-3">
+                    Mi Bolsa
+                </h3>
+
+                <p>
+                    Revisa tus productos y servicios.
+                </p>
+
+                <a href="<?php echo e(route('cart.index')); ?>"
+                   class="btn quick-btn">
+
+                    <i class="bi bi-bag-check"></i> Ver Bolsa
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
 <!-- ÚLTIMAS CITAS -->
@@ -700,4 +766,4 @@ body{
 
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\xampp\PROYECTO--main\resources\views/dashboard.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\danna\OneDrive\Documentos\GitHub\PROYECTO-NUEVO\resources\views/dashboard.blade.php ENDPATH**/ ?>

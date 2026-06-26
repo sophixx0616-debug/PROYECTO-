@@ -1,8 +1,10 @@
+
+
 <?php $__env->startSection('content'); ?>
 
 <link href="https://googleapis.com" rel="stylesheet">
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="https://jsdelivr.net">
 
 <style>
 
@@ -113,7 +115,7 @@
 
             <div class="col-md-4">
 
-                <div class="card h-100 spa-card shadow-sm p-4 text-center">
+                <div class="card h-100 spa-card shadow-sm p-4 text-center d-flex flex-column">
                     
                     <div class="icono-contenedor">
 
@@ -170,8 +172,27 @@
 
                                 <button type="submit" 
                                         class="btn btn-sm btn-outline-danger rounded-pill px-3" 
-                                        onclick="return confirm('¿Eliminar servicio?')">
+                                        onclick="event.preventDefault(); Swal.fire({icon:'warning',title:'¿Eliminar servicio?',text:'Esta acción no se puede deshacer.',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí, eliminar',cancelButtonText:'Cancelar',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
                                     <i class="bi bi-trash3-fill"></i>
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    <?php else: ?>
+
+                        <div class="d-grid mt-auto pt-3 border-top border-light">
+
+                            <form action="<?php echo e(route('cart.addService', $service->id)); ?>" method="POST" 
+                                   class="d-inline">
+                                
+                                <?php echo csrf_field(); ?>
+                                
+                                <button type="submit" class="btn text-white w-100 rounded-pill shadow-sm py-2 fw-bold" 
+                                        style="background-color: #e7a6b6; transition: 0.3s;"
+                                        onclick="event.preventDefault(); Swal.fire({icon:'question',title:'Agregar servicio',text:'¿Deseas agregar este servicio a tu bolsa?',showCancelButton:true,confirmButtonColor:'#6f7f5d',cancelButtonColor:'#dc3545',confirmButtonText:'Sí, agregar',cancelButtonText:'Cancelar',customClass:{popup:'rounded-4'}}).then((r)=>{if(r.isConfirmed) this.closest('form').submit()})">
+                                    <i class="bi bi-bag-plus-fill me-2"></i> Reservar Servicio
                                 </button>
 
                             </form>
@@ -220,4 +241,4 @@
                     
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\xampp\htdocs\xampp\PROYECTO--main\resources\views/services/index.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\danna\OneDrive\Documentos\GitHub\PROYECTO-NUEVO\resources\views/services/index.blade.php ENDPATH**/ ?>
