@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Inventory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class InventoryController extends Controller
 {
@@ -12,10 +13,8 @@ class InventoryController extends Controller
         $items = Inventory::all();
 
         $totalProductos = $items->count();
-
-        $stockBajo = $items->where('quantity', '<=', 5)->count();
-
-        $sinStock = $items->where('quantity', 0)->count();
+        $stockBajo = $items->where('stock', '<=', 5)->count();
+        $sinStock = $items->where('stock', 0)->count();
 
         return view('inventory.index', compact(
             'items',
@@ -31,25 +30,35 @@ class InventoryController extends Controller
     }
 
     public function store(Request $request)
-{
-    $request->validate([
-        'product_name' => 'required',
-        'stock' => 'required|numeric',
-        'price' => 'required|numeric',
-    ]);
+    {
+        $request->validate([
+            'product_name' => 'required',
+            'stock' => 'required|numeric',
+            'price' => 'required|numeric',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+        ]);
 
-    Inventory::create([
-        'product_name' => $request->product_name,
-        'brand' => $request->brand,
-        'stock' => $request->stock,
-        'category' => $request->category,
-        'description' => $request->description,
-        'price' => $request->price,
-    ]);
+        $imagePath = null;
 
-    return redirect()->route('inventory.index')
-        ->with('success', 'Producto agregado correctamente');
-}
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('inventory', 'public');
+        }
+
+        Inventory::create([
+            'product_name' => $request->product_name,
+            'brand' => $request->brand,
+            'stock' => $request->stock,
+            'category' => $request->category,
+            'description' => $request->description,
+            'price' => $request->price,
+            'image' => $imagePath,
+        ]);
+
+        return redirect()
+            ->route('inventory.index')
+            ->with('success', 'Producto agregado correctamente');
+    }
+
     public function edit($id)
     {
         $item = Inventory::findOrFail($id);
@@ -60,20 +69,37 @@ class InventoryController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required',
-            'quantity' => 'required|numeric',
+            'product_name' => 'required',
+            'stock' => 'required|numeric',
             'price' => 'required|numeric',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         $item = Inventory::findOrFail($id);
 
+        $imagePath = $item->image;
+
+        if ($request->hasFile('image')) {
+
+            if ($item->image && Storage::disk('public')->exists($item->image)) {
+                Storage::disk('public')->delete($item->image);
+            }
+
+            $imagePath = $request->file('image')->store('inventory', 'public');
+        }
+
         $item->update([
-            'name' => $request->name,
-            'quantity' => $request->quantity,
+            'product_name' => $request->product_name,
+            'brand' => $request->brand,
+            'stock' => $request->stock,
+            'category' => $request->category,
+            'description' => $request->description,
             'price' => $request->price,
+            'image' => $imagePath,
         ]);
 
-        return redirect()->route('inventory.index')
+        return redirect()
+            ->route('inventory.index')
             ->with('success', 'Producto actualizado correctamente');
     }
 
@@ -81,9 +107,14 @@ class InventoryController extends Controller
     {
         $item = Inventory::findOrFail($id);
 
+        if ($item->image && Storage::disk('public')->exists($item->image)) {
+            Storage::disk('public')->delete($item->image);
+        }
+
         $item->delete();
 
-        return redirect()->route('inventory.index')
+        return redirect()
+            ->route('inventory.index')
             ->with('success', 'Producto eliminado correctamente');
     }
 }

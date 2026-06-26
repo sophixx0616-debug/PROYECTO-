@@ -77,7 +77,8 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                 <div class="card-body p-4">
 
                     <form action="{{ route('services.store') }}"
-                          method="POST">
+                          method="POST"
+                          enctype="multipart/form-data">
 
                         @csrf
 
@@ -156,6 +157,25 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                                 </option>
 
                             </select>
+
+                        </div>
+
+                        <!-- NUEVO CAMPO IMAGEN -->
+
+                        <div class="mb-4">
+
+                            <label class="fw-bold mb-2">
+                                Imagen del Servicio
+                            </label>
+
+                            <input type="file"
+                                   name="image"
+                                   class="form-control"
+                                   accept="image/png,image/jpeg,image/jpg">
+
+                            <small class="text-muted">
+                                Selecciona una imagen JPG o PNG.
+                            </small>
 
                         </div>
 

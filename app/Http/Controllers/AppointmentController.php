@@ -59,33 +59,35 @@ class AppointmentController extends \Illuminate\Routing\Controller
 
     public function store(Request $request)
     {
-        $inventory = Inventory::where(
-            'name',
-            $request->service_name
-        )->first();
+        $service = Service::find($request->service_id);
 
-        if ($inventory && $inventory->quantity > 0) {
-            $inventory->decrement('quantity');
-        }
+if ($service) {
+
+   Inventory::where('nombre', $request->nombre)->first();
+
+    if ($inventory && $inventory->quantity > 0) {
+        $inventory->decrement('quantity');
+    }
+
+}
 
         $request->validate([
             'service_id' => 'required|exists:services,id',
             'date'       => 'required|date',
             'time'       => 'required',
             'worker'     => 'required'
-        ]);
+        ]);$exists = Appointment::where('date', $request->date)
+    ->where('time', $request->time)
+    ->where('worker', $request->worker)
+    ->exists();
 
-        $exists = Appointment::where('date', $request->date)
-            ->where('time', $request->time)
-            ->exists();
+if ($exists) {
 
-        if ($exists) {
-
-            return back()->with(
-                'error',
-                'Ya existe una cita en esa fecha y hora.'
-            );
-        }
+    return back()->with(
+        'error',
+        'La especialista seleccionada ya tiene una cita en esa fecha y hora.'
+    );
+}
 
         Appointment::create([
             'user_id'    => Auth::id(),
@@ -162,10 +164,15 @@ public function update(Request $request, Appointment $appointment)
 
 public function destroy(Appointment $appointment)
 {
-    $appointment->delete();
+    $appointment->update([
+        'status' => 'cancelada'
+    ]);
 
     return redirect()
         ->route('appointments.index')
-        ->with('success', 'Cita eliminada correctamente');
+        ->with(
+            'success',
+            'La cita fue cancelada correctamente.'
+        );
 }
 }

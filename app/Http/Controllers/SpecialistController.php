@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Specialist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SpecialistController extends Controller
 {
@@ -19,23 +20,29 @@ class SpecialistController extends Controller
         return view('specialists.create');
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'name' => 'required',
-            'specialty' => 'required'
-        ]);
+public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required',
+        'specialty' => 'required',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
+    ]);
 
-        Specialist::create([
-            'name' => $request->name,
-            'specialty' => $request->specialty
-        ]);
+    $data = [
+        'name' => $request->name,
+        'specialty' => $request->specialty,
+    ];
 
-        return redirect()
-            ->route('specialists.index')
-            ->with('success', 'Especialista creada correctamente');
+    if ($request->hasFile('image')) {
+        $data['image'] = $request->file('image')->store('specialists', 'public');
     }
 
+    Specialist::create($data);
+
+    return redirect()
+        ->route('specialists.index')
+        ->with('success', 'Especialista creada correctamente');
+}
     public function show(Specialist $specialist)
     {
         return view('specialists.show', compact('specialist'));
@@ -47,21 +54,35 @@ class SpecialistController extends Controller
     }
 
     public function update(Request $request, Specialist $specialist)
-    {
-        $request->validate([
-            'name' => 'required',
-            'specialty' => 'required'
-        ]);
+{
+    $request->validate([
+        'name' => 'required',
+        'specialty' => 'required',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
+    ]);
 
-        $specialist->update([
-            'name' => $request->name,
-            'specialty' => $request->specialty
-        ]);
+    $data = [
+        'name' => $request->name,
+        'specialty' => $request->specialty,
+    ];
 
-        return redirect()
-            ->route('specialists.index')
-            ->with('success', 'Especialista actualizada correctamente');
+    if ($request->hasFile('image')) {
+
+        // Elimina la imagen anterior
+        if ($specialist->image && Storage::disk('public')->exists($specialist->image)) {
+            Storage::disk('public')->delete($specialist->image);
+        }
+
+        // Guarda la nueva
+        $data['image'] = $request->file('image')->store('specialists', 'public');
     }
+
+    $specialist->update($data);
+
+    return redirect()
+        ->route('specialists.index')
+        ->with('success', 'Especialista actualizada correctamente');
+}
 
     public function destroy(Specialist $specialist)
     {

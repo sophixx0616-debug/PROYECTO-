@@ -12,6 +12,7 @@ class Inventory extends Model
         'stock',
         'category',
         'description',
-        'price'
+        'price',
+        'image'
     ];
 }

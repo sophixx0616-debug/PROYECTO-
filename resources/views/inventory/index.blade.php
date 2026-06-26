@@ -41,7 +41,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
 </div>
 
-@if($items->where('quantity','<=',3)->count())
+@if($items->where('stock','<=',3)->count())
 
     <div class="alert alert-warning">
 
@@ -69,18 +69,23 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
         <div class="card border-0 shadow-sm h-100"
              style="border-radius:25px;">
+             <div class="text-center">
 
-            <div class="text-center py-4"
-                 style="background:#fdf1f4;">
+    @if($item->image)
 
-                <i class="bi bi-box-seam"
-                   style="
-                        font-size:80px;
-                        color:#e7a6b6;
-                   ">
-                </i>
+        <img src="{{ asset('img/'.$item->image) }}"
+             alt="{{ $item->product_name }}"
+             class="card-img-top"
+             style="height:220px; object-fit:cover; border-radius:25px 25px 0 0;">
 
-            </div>
+    @else
+
+        <i class="bi bi-box-seam"
+           style="font-size:80px; color:#e7a6b6;"></i>
+
+    @endif
+
+</div>
 
             <div class="card-body">
 
@@ -103,39 +108,39 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
                     <strong>Existencias:</strong>
 
-                    @if($item->quantity <= 3)
+                    @if($item->stock <= 3)
 
-                        <span class="badge bg-danger">
-                            {{ $item->quantity }}
-                        </span>
+<span class="badge bg-danger">
+    {{ $item->stock }}
+</span>
 
-                    @elseif($item->quantity <= 10)
+@elseif($item->stock <= 10)
 
-                        <span class="badge bg-warning text-dark">
-                            {{ $item->quantity }}
-                        </span>
+<span class="badge bg-warning text-dark">
+    {{ $item->stock }}
+</span>
 
-                    @else
+@else
 
-                        <span class="badge bg-success">
-                            {{ $item->quantity }}
-                        </span>
+<span class="badge bg-success">
+    {{ $item->stock }}
+</span>
 
-                    @endif
+@endif
 
                 </p>
 
-                @if($item->quantity <= 3)
+                @if($item->stock <= 3)
 
-                    <div class="alert alert-danger py-2">
+<div class="alert alert-danger py-2">
 
-                        <i class="bi bi-exclamation-triangle-fill"></i>
+    <i class="bi bi-exclamation-triangle-fill"></i>
 
-                        Stock bajo
+    Stock bajo
 
-                    </div>
+</div>
 
-                @endif
+@endif
 
             </div>
 

@@ -19,7 +19,8 @@
         <div class="card-body p-4">
 
             <form action="{{ route('specialists.store') }}"
-                  method="POST">
+      method="POST"
+      enctype="multipart/form-data">
 
                 @csrf
 
@@ -47,6 +48,25 @@
                         Especialidad
 
                     </label>
+                    <div class="mb-4">
+
+    <label class="fw-bold mb-2">
+
+        <i class="fas fa-image"></i>
+        Fotografía
+
+    </label>
+
+    <input type="file"
+           name="image"
+           class="form-control form-control-lg"
+           accept="image/*">
+
+    <small class="text-muted">
+        Formatos permitidos: JPG, PNG, JPEG o WEBP.
+    </small>
+
+</div>
 
                     <input type="text"
                            name="specialty"
